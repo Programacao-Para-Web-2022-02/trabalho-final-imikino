@@ -1,0 +1,39 @@
+body {
+    background-color: rgba(15, 14, 14, 0.89);
+}
+
+
+.faixa-jogos {
+    margin-top: 20px;
+    width: 100vw;
+    height: 20vh;
+    background-color: rgb(44, 105, 105);
+}
+
+.container1 {
+    margin-top: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100vw;
+    height: 60vh;
+}
+
+.lançamentos {
+    width: 30vw;
+    height: 50vh;
+    background-color: rgb(44, 105, 105);
+}
+
+.melhor-avaliados {
+    width: 30vw;
+    height: 50vh;
+    background-color: rgb(32, 179, 179);
+}
+
+.mais-populares{
+    width: 30vw;
+    height: 50vh;
+    background-color: rgb(4, 88, 88);
+}
+/*#4df5ee*/
