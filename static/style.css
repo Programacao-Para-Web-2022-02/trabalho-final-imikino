@@ -2,12 +2,16 @@ body {
     background-color: rgba(15, 14, 14, 0.89);
 }
 
-
 .faixa-jogos {
-    margin-top: 20px;
     width: 100vw;
     height: 20vh;
     background-color: rgb(44, 105, 105);
+}
+
+.ImagemLogo {
+    width: 12rem;
+    height: 7rem;
+    object-fit: cover;
 }
 
 .container1 {
@@ -36,4 +40,5 @@ body {
     height: 50vh;
     background-color: rgb(4, 88, 88);
 }
+
 /*#4df5ee*/
