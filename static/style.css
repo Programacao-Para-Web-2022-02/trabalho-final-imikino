@@ -1,12 +1,158 @@
+@-webkit-keyframes scale-up-hor-left {
+    0% {
+      -webkit-transform: scaleX(0.7);
+              transform: scaleX(0.7);
+      -webkit-transform-origin: 0% 0%;
+              transform-origin: 0% 0%;
+    }
+    100% {
+      -webkit-transform: scaleX(1);
+              transform: scaleX(1);
+      -webkit-transform-origin: 0% 0%;
+              transform-origin: 0% 0%;
+    }
+  }
+  @keyframes scale-up-hor-left {
+    0% {
+      -webkit-transform: scaleX(0.7);
+              transform: scaleX(0.7);
+      -webkit-transform-origin: 0% 0%;
+              transform-origin: 0% 0%;
+    }
+    100% {
+      -webkit-transform: scaleX(1);
+              transform: scaleX(1);
+      -webkit-transform-origin: 0% 0%;
+              transform-origin: 0% 0%;
+    }
+  }
+
 body {
     background-color: rgba(15, 14, 14, 0.89);
 }
 
+/*FAIXA DE JOGOS*/
+
 .faixa-jogos {
     width: 100vw;
-    height: 20vh;
+    height: 35vh;
     background-color: rgb(44, 105, 105);
+    display: flex;
 }
+
+.jogo {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    background-color: aqua;
+    height: 100%;
+    padding: 2px;
+    border: black solid 1px;
+    flex: 1;
+    transition: 1s;
+}
+
+.jogo:hover {
+    flex: 3;
+}
+
+#jogo1 {
+    width: 16.66%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-image: url(images/imgFaixa/cuphead.jpg);
+}
+
+.cartao {
+    padding-top: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: -1px;
+    margin-left: -2px;
+    width: 100%;
+    height: 101%;
+    background-image: linear-gradient(to right, rgba(37, 41, 41, 0.550), rgba(21, 36, 39, 0.550));
+    overflow: hidden;
+    opacity: 0;
+}
+
+.cartao:hover {
+    opacity: 1;
+    -webkit-animation: scale-up-hor-left 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	        animation: scale-up-hor-left 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    transition-delay: 0.3s;
+}
+
+
+.caracteristicas {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.caracteristicasCards {
+    display: flex;
+    justify-content: center;
+    border: 2px solid white; 
+    border-radius: 30px;
+    width: 100px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+#jogo2 {
+    width: 16.66%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-image: url(images/imgFaixa/diablo.jpg);
+}
+
+#jogo3 {
+    width: 16.66%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-image: url(images/imgFaixa/fortnite.jpg);
+}
+
+#jogo4 {
+    width: 16.66%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-image: url(images/imgFaixa/lol.jpg);
+}
+
+#jogo5 {
+    width: 16.66%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-image: url(images/imgFaixa/ow.jpg);
+}
+
+#jogo6 {
+    width: 16.66%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-image: url(images/imgFaixa/stardewvalley.jpg);
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .ImagemLogo {
     width: 12rem;
