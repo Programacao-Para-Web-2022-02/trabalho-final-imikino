@@ -35,7 +35,7 @@ body {
 
 .faixa-jogos {
     width: 100vw;
-    height: 35vh;
+    height: 311.5px;
     background-color: rgb(44, 105, 105);
     display: flex;
 }
@@ -144,19 +144,11 @@ body {
 }
 
 
-
-
-
-
-
-
-
-
-
+/*NavBar*/
 
 .ImagemLogo {
-    width: 12rem;
-    height: 7rem;
+    margin-top: 7px;
+    height: 6rem;
     object-fit: cover;
 }
 
