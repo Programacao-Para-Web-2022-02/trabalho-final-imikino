@@ -13,12 +13,12 @@ def home():
 def sobre():
     return render_template('sobre.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form_login = FormLogin()
     return render_template('login.html', form_login=form_login)
 
-@app.route('/criar-conta')
+@app.route('/criar-conta', methods=['GET', 'POST'])
 def criarConta():
     form_criarconta = FormCriarConta()
     return render_template('criarConta.html', form_criarconta=form_criarconta)

@@ -1,18 +1,25 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class="container">
-        <div class="sub_container">
-            <form method="POST" action=''>
-                <h1 style="color: white;">Login</h1>
-                {{ form_login.email.label }}
-                {{ form_login.email }}
-                {{ form_login.senha.label}}
-                {{ form_login.senha}}
-                {{ form_login.lembrar_dados.label }}
-                {{ form_login.lembrar_dados }}
-                {{ form_login.botao_submit_login }}
-            </form>
-        </div>
+    <div class="row d-flex justify-content-center mt-5">
+        <form method="POST" action='' class="border p-4 w-50"  style="border-radius: 8px;">
+            <legend style="color: white;">Fazer Login</legend>
+            <fieldset>
+                <div class="form-group">
+                    {{ form_login.email.label(class='form-control-label', style='color: white') }}
+                    {{ form_login.email(class='form-control') }}
+                </div>
+                <div class="form-group">
+                    {{ form_login.senha.label(class='form-control-label', style='color: white') }}
+                    {{ form_login.senha(class='form-control') }}
+                </div>
+                <div class="form-group mt-2">
+                    {{ form_login.lembrar_dados.label(class='form-check-label', style='color: white') }}
+                    {{ form_login.lembrar_dados(class='form-check-input') }}
+                </div>
+            </fieldset>
+            {{ form_login.botao_submit_login(class='btn btn-primary mt-3') }}
+        </form>
+        <fieldset class="row d-flex justify-content-center mt-2" style="color: white; font-size: 18px;">Não possui uma conta? <a class="row d-flex justify-content-center" style="text-decoration: none;" href="{{ url_for('criarConta') }}">Cadastre-se aqui</a></fieldset>
     </div>
 {% endblock %}
