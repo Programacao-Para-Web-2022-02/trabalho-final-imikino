@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="container">
+        <div class="sub_container">
+            <form method="POST" action=''>
+                <h1 style="color: white;">Login</h1>
+                {{ form_login.email.label }}
+                {{ form_login.email }}
+                {{ form_login.senha.label}}
+                {{ form_login.senha}}
+                {{ form_login.lembrar_dados.label }}
+                {{ form_login.lembrar_dados }}
+                {{ form_login.botao_submit_login }}
+            </form>
+        </div>
+    </div>
+{% endblock %}
