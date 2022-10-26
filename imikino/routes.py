@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for
 from imikino import app, database, bcrypt
 from imikino.forms import FormLogin, FormCriarConta
 from imikino.models import Usuario
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 
 
 @app.route('/')

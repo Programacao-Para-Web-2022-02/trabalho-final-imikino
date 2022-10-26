@@ -15,6 +15,7 @@ pip install email_validator
 
 #Agora temos que baixar o sql alchemy que vai ser o nosso banco de dados
 pip install sqlalchemy
+pip install flask-sqlalchemy
 
 #como criar e consultar o banco de dados
 from main import database
