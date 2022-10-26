@@ -52,7 +52,7 @@ def criarConta():
         # -----------------------
         # fez login com sucesso
         # exibir mensagem de sucesso -> flash
-        flash(f'Bem-vindo(a) ao time {form_criarconta.username.data}, conta criada com sucesso',
+        flash(f'Bem-vindo(a) ao time, {form_criarconta.username.data}!! Conta criada com sucesso',
               'alert-primary')  # .data serve para pegar o que a pessoa escreveu no campo de texto
         # redirecionar para a home page -> redirect
         return redirect(url_for('home'))
