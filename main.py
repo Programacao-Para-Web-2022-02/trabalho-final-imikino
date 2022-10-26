@@ -72,7 +72,11 @@ usuario2.senha -> b'$2b$12$Sjt1VqGrBW34pRJfzFaC4uSrCFbKtGL6Mc7PVIucHT.k0Xw1Nr/jy
 '''
 
 '''
-#Baixar o que iremos usar para criptografar a senha
+#baixar o que iremos usar para criptografar a senha
 pip install flask-bcrypt
+
+-----------------
+#baixar o que iremos usar para fazer o login no site
+pip install flask-login
 '''
 
