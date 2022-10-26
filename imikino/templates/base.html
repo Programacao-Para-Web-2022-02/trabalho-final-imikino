@@ -12,6 +12,18 @@
     <body class="bg-dark">
         {% include 'navbar.html' %}
 
+        <div class="container w-50">
+            {% with mensagens = get_flashed_messages(with_categories=True) %}
+                {% if mensagens %}
+                    {% for categoria, mensagem in mensagens %}
+                        <div class="alert {{ categoria }} row d-flex justify-content-center" style="font-size: 1.1rem;">
+                            {{ mensagem }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
         {% block body %}
         {% endblock %}
 
