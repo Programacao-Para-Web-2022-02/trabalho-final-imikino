@@ -2,7 +2,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy  # -> para criar o banco de dados
 from flask_bcrypt import Bcrypt  # -> para criptografar a senha do usuário
 from flask_login import LoginManager  # -> para fazer login no site
-from imikino import routes
 
 app = Flask(__name__)
 
@@ -17,3 +16,4 @@ bcrypt = Bcrypt(
 login_manager = LoginManager(app)
 
 
+from imikino import routes

@@ -14,15 +14,16 @@ pip install flask-wtf (Criação de formulários com FlaskForm)
 pip install email_validator
 
 #Agora temos que baixar o sql alchemy que vai ser o nosso banco de dados
-pip install sqlalchemy #desatualizado
-pip install flask-sqlalchemy #desatualizado
+pip install sqlalchemy
+pip install flask-sqlalchemy 
+
+
+#como criar e consultar o banco de dados
+from main import database #desatualizado
+from models import Usuario #desatualizado
 
 from imikino import database
 from imikino.models import Usuario
-
-#como criar e consultar o banco de dados
-from main import database
-from models import Usuario 
 database.create_all()
 
 comandos para mexer no banco de dados:
