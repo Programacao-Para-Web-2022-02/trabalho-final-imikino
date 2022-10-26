@@ -1,8 +1,8 @@
 from imikino import app
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    with app.app_context():
+        app.run(debug=True)
 
 '''
 Passo a passo de downloads e comandos:
@@ -83,4 +83,3 @@ pip install flask-bcrypt
 #baixar o que iremos usar para fazer o login no site
 pip install flask-login
 '''
-
