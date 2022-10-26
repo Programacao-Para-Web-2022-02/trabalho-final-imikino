@@ -27,8 +27,7 @@ def login():
             login_user(usuario, remember=form_login.lembrar_dados.data)
             # fez login com sucesso
             # exibir mensagem de sucesso -> flash
-            flash(f'Login feito com sucesso para o e-mail {form_login.email.data}',
-                  'alert-primary')  # .data serve para pegar o que a pessoa escreveu no campo de texto
+            flash(f'Login feito com sucesso para o e-mail {form_login.email.data}', 'alert-primary')  # .data serve para pegar o que a pessoa escreveu no campo de texto
             # redirecionar para a home page -> redirect
             return redirect(url_for('home'))
         else:
@@ -52,8 +51,7 @@ def criarConta():
         # -----------------------
         # fez login com sucesso
         # exibir mensagem de sucesso -> flash
-        flash(f'Bem-vindo(a) ao time, {form_criarconta.username.data}!! Conta criada com sucesso',
-              'alert-primary')  # .data serve para pegar o que a pessoa escreveu no campo de texto
+        flash(f'Bem-vindo(a) ao time, {form_criarconta.username.data}!! Conta criada com sucesso', 'alert-primary')  # .data serve para pegar o que a pessoa escreveu no campo de texto
         # redirecionar para a home page -> redirect
         return redirect(url_for('home'))
 
