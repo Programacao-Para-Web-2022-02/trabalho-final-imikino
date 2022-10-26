@@ -66,5 +66,13 @@ usuario = Usuario.query.first()
 usuario.username
 usuario.email
 usuario.senha
+
+usuario2 = Usuario.query.filter_by(username='leozin2').first()
+usuario2.senha -> b'$2b$12$Sjt1VqGrBW34pRJfzFaC4uSrCFbKtGL6Mc7PVIucHT.k0Xw1Nr/jy' #a senha está criptografada
+'''
+
+'''
+#Baixar o que iremos usar para criptografar a senha
+pip install flask-bcrypt
 '''
 

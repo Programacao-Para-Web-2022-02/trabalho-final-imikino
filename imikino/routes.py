@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for
-from imikino import app, database
+from imikino import app, database, bcrypt
 from imikino.forms import FormLogin, FormCriarConta
 from imikino.models import Usuario
 
@@ -29,8 +29,10 @@ def criarConta():
     form_criarconta = FormCriarConta()
 
     if form_criarconta.validate_on_submit():
+        #criptografar a senha
+        senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
         #criar o Usuario
-        usuario = Usuario(username=form_criarconta.username.data, email=form_criarconta.email.data, senha=form_criarconta.senha.data)
+        usuario = Usuario(username=form_criarconta.username.data, email=form_criarconta.email.data, senha=senha_cript)
         #adicionar a sessão
         database.session.add(usuario)
         #commitar a sessão

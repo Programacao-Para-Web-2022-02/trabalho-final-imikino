@@ -166,19 +166,19 @@ body {
 .lançamentos {
     width: 30vw;
     height: 50vh;
-    background-color: rgb(44, 105, 105);
+    background-image: linear-gradient(to right, rgb(67, 208, 226), rgb(139, 61, 155));
 }
 
 .melhor-avaliados {
     width: 30vw;
     height: 50vh;
-    background-color: rgb(32, 179, 179);
+    background-image: linear-gradient(to right, rgb(67, 208, 226), rgb(139, 61, 155));
 }
 
 .mais-populares{
     width: 30vw;
     height: 50vh;
-    background-color: rgb(4, 88, 88);
+    background-image: linear-gradient(to right, rgb(67, 208, 226), rgb(139, 61, 155));
 }
 
 /*#4df5ee*/
