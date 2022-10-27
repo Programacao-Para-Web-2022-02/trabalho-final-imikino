@@ -95,8 +95,9 @@ def sair():
 @app.route('/perfil')
 @login_required #precisa estar logado para acessar essa página
 def perfil():
-    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-    return render_template('perfil.html', foto_perfil=foto_perfil)
+    if current_user.is_authenticated:
+        foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
+        return render_template('perfil.html', foto_perfil=foto_perfil)
 
 
 def salvar_imagem(imagem):
@@ -134,5 +135,6 @@ def editar_perfil():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-    return render_template('editarperfil.html', foto_perfil=foto_perfil, form=form)
+    if current_user.is_authenticated:
+        foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
+        return render_template('editarperfil.html', foto_perfil=foto_perfil, form=form)

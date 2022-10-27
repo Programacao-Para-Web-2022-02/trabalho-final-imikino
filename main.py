@@ -98,3 +98,9 @@ python -m venv venv
 #instalar o gunicorn para colocar o site no ar com o heroku
 pip install gunicorn
 '''
+"""
+Para dar commit no heroku:
+git add .
+git commit -m 'comentario'
+git push heroku HEAD:master
+"""
