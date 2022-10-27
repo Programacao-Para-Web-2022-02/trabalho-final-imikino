@@ -94,4 +94,7 @@ python -m venv venv
 #ativar o ambiente virtual
 .\venv\Scripts\Activate.ps1
 
+-----------------
+#instalar o gunicorn para colocar o site no ar com o heroku
+pip install gunicorn
 '''
