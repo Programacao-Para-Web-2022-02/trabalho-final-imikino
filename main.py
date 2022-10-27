@@ -17,7 +17,6 @@ pip install email_validator
 pip install sqlalchemy
 pip install flask-sqlalchemy 
 
-
 #como criar e consultar o banco de dados
 from main import database #desatualizado
 from models import Usuario #desatualizado

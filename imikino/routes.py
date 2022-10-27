@@ -22,6 +22,7 @@ def sobre():
         return render_template('sobre.html', foto_perfil=foto_perfil)
     return render_template('sobre.html')
 
+
 @app.route('/usuarios')
 @login_required #precisa estar logado para acessar essa página
 def usuarios():
@@ -29,6 +30,7 @@ def usuarios():
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
         return render_template('usuarios.html', foto_perfil=foto_perfil)
     return render_template('usuarios.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
