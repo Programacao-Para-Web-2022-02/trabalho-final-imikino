@@ -1,4 +1,3 @@
-from msilib.schema import File
 from flask_wtf import FlaskForm  # classe pronta do Flask para criação de formulários
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField  # wtforms vem junto com o flask_wtf -> estamos importando o que vamos colocar nos campos abaixo
