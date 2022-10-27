@@ -7,6 +7,9 @@ import secrets
 import os
 from PIL import Image #vamos usar para reduzir o tamanho da imagem
 
+
+
+
 @app.route('/')
 def home():
     if current_user.is_authenticated:
@@ -26,9 +29,10 @@ def sobre():
 @app.route('/usuarios')
 @login_required #precisa estar logado para acessar essa página
 def usuarios():
+    lista_usuarios  = Usuario.query.all()
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('usuarios.html', foto_perfil=foto_perfil)
+        return render_template('usuarios.html', foto_perfil=foto_perfil, lista_usuarios=lista_usuarios)
     return render_template('usuarios.html')
 
 
