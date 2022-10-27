@@ -83,4 +83,8 @@ pip install flask-bcrypt
 -----------------
 #baixar o que iremos usar para fazer o login no site
 pip install flask-login
+
+-----------------
+#baixar o que iremos usar para reduzir o tamanho da imagem ao editar o perfil
+pip install Pillow
 '''

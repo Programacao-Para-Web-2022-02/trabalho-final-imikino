@@ -11,6 +11,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///imikino.db'  # criar o arquiv
 database = SQLAlchemy(app)
 bcrypt = Bcrypt(app)  # auando fazemos isso só o nosso site é capaz de entender a criptografia da senha, ninugém de fora consegue pegar (foi aplicado no routes)
 login_manager = LoginManager(app)
-
+login_manager.login_view = 'login' #quando clicar em uma página que não é permitida ele vai para a página da função login
+login_manager.login_message = 'Faça login para acessar essa página'
+login_manager.login_message_category = 'alert-primary'
 
 from imikino import routes
