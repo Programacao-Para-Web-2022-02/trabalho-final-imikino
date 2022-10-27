@@ -1,7 +1,8 @@
-from imikino import app
+from imikino import app, database
 
 if __name__ == '__main__':
     with app.app_context():
+        #database.create_all()
         app.run(debug=True)
 
 '''
@@ -86,4 +87,11 @@ pip install flask-login
 -----------------
 #baixar o que iremos usar para reduzir o tamanho da imagem ao editar o perfil
 pip install Pillow
+
+#Ativando o ambiente virtual
+#criar o arquivo
+python -m venv venv 
+#ativar o ambiente virtual
+.\venv\Scripts\Activate.ps1
+
 '''
