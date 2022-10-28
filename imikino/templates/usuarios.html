@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block body %}
+    <hr style="color: white; margin-bottom: -50px">
+    <div class="div-main-usuarios container">
         {% for usuario in lista_usuarios %}
-            <div class="container">
-                <div class="div-main-usuarios">
                     <div class="div-sub-main">
                         <br>
                         <div class="d-flex justify-content-center">
@@ -29,8 +29,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
         {% endfor %}
-<div class="row mt-5"></div>
+    </div>
+    <div class="row mt-5"></div>
 {% endblock %}

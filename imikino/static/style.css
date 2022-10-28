@@ -27,6 +27,27 @@
     }
   }
 
+@-webkit-keyframes shadow-drop-tb {
+    0% {
+      -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 0 rgba(0, 0, 0, 0);
+              box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+    100% {
+      -webkit-box-shadow: 0 -12px 20px -12px rgba(135, 194, 233, 0.445), 0 12px 20px -12px rgba(135, 194, 233, 0.445);
+              box-shadow: 0 -12px 20px -12px rgba(135, 194, 233, 0.445), 0 12px 20px -12px rgba(135, 194, 233, 0.445);
+    }
+  }
+  @keyframes shadow-drop-tb {
+    0% {
+      -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 0 rgba(0, 0, 0, 0);
+              box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+    100% {
+      -webkit-box-shadow: 0 -12px 20px -12px rgba(135, 194, 233, 0.445), 0 12px 20px -12px rgba(135, 194, 233, 0.445);
+              box-shadow: 0 -12px 20px -12px rgba(135, 194, 233, 0.445), 0 12px 20px -12px rgba(135, 194, 233, 0.445);
+    }
+  }
+
 body {
     background-color: rgba(15, 14, 14, 0.89);
 }
@@ -173,19 +194,28 @@ body {
 .lançamentos {
     width: 30vw;
     height: 50vh;
-    background-image: linear-gradient(to right, rgb(67, 208, 226), rgb(139, 61, 155));
+    background-image: linear-gradient(to right, rgb(40, 31, 41), rgb(27, 33, 37));
+    border-radius: 20px;
+    -webkit-animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
 .melhor-avaliados {
     width: 30vw;
     height: 50vh;
-    background-image: linear-gradient(to right, rgb(67, 208, 226), rgb(139, 61, 155));
+    background-image: linear-gradient(to right, rgb(40, 31, 41), rgb(27, 33, 37));
+    border-radius: 20px;
+    -webkit-animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
 .mais-populares{
     width: 30vw;
     height: 50vh;
-    background-image: linear-gradient(to right, rgb(67, 208, 226), rgb(139, 61, 155));
+    background-image: linear-gradient(to right, rgb(40, 31, 41), rgb(27, 33, 37));
+    border-radius: 20px;
+    -webkit-animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
 /*Perfil*/
@@ -197,14 +227,6 @@ body {
     margin-top: 120px;
     width: 100%;
     height: 385px;
-}
-
-.div-sub-main {
-    width: 60%;
-    max-width: 400px;
-    height: 385px;
-    background-image: linear-gradient(to right, rgb(27, 48, 48),rgb(26, 13, 34));
-    border-radius: 10px;
 }
 
 .config {
@@ -230,6 +252,15 @@ body {
 
 /*Usuarios*/
 
+.div-sub-main {
+    width: 60%;
+    max-width: 400px;
+    height: 385px;
+    background-image: linear-gradient(to right, rgb(27, 48, 48),rgb(26, 13, 34));
+    border-radius: 10px;
+    margin-top: 40px;
+}
+
 .logo-usuarios {
     width: 80px;
     height: 50px;
@@ -237,12 +268,31 @@ body {
 
 .div-main-usuarios {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex-wrap: wrap;
     margin-top: 60px;
     width: 100%;
     height: 385px;
 }
 
+
+
+/* jogos */
+
+.div-sub-main-jogos {
+    width: 60%;
+    max-width: 400px;
+    height: 550px;
+    background-image: linear-gradient(to right, rgb(27, 48, 48),rgb(26, 13, 34));
+    border-radius: 10px;
+    margin-top: 40px;
+}
+
+.imagem-perfil-jogo {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 85px;
+}
 /*footer*/
 

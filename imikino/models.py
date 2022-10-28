@@ -16,3 +16,14 @@ class Usuario(database.Model, UserMixin):
     email = database.Column(database.String, nullable=False, unique=True)
     senha = database.Column(database.String, nullable=False)
     foto_perfil = database.Column(database.String, default='default.jpg')
+
+
+class Jogos(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    nome = database.Column(database.String, nullable=False)
+    lancamento = database.Column(database.Integer, nullable=False)
+    descricao = database.Column(database.String, nullable=False)
+    genero = database.Column(database.String, nullable=False)
+    desenvolvedor = database.Column(database.String, nullable=False)
+    foto_jogo = database.Column(database.String, nullable=False)
+    

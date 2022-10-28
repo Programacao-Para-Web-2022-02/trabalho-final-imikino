@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm  # classe pronta do Flask para criação de formulários
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField  # wtforms vem junto com o flask_wtf -> estamos importando o que vamos colocar nos campos abaixo
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField # wtforms vem junto com o flask_wtf -> estamos importando o que vamos colocar nos campos abaixo
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError  # VALIDADORES ... DataRequired -> Campo Obrigatório | Length -> Tamanho mínimo de um campo | Email -> Verificar se é um email válido | EqualTo -> Verificar se um campo é igual ao outro (no caso o de senha)
 from imikino.models import Usuario
 from flask_login import current_user
@@ -54,3 +54,8 @@ class FormEditarPerfil(FlaskForm):
             usuario = Usuario.query.filter_by(email=email.data).first()
             if usuario:
                 raise ValidationError("Já existe um usuário com esse e-mail")
+
+
+class Avaliacao(FlaskForm):
+    avaliacao = SelectField('★', coerce=int, choices=[0, 1, 2, 3, 4, 5])
+    botao_submit_avaliar = SubmitField('Salvar')

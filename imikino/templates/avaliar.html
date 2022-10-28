@@ -1,0 +1,13 @@
+{% extends 'jogos.html' %}
+
+{% block form_avaliar %}
+    <form method="POST" action='' class="container">
+        <fieldset>
+            <div class="d-flex justify-content-center mt-3">
+                {{ form.csrf_token }}
+                {{ form.avaliacao(class="form-select w-25") }}
+                {{ form.botao_submit_avaliar }}
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
