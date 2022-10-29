@@ -56,6 +56,6 @@ class FormEditarPerfil(FlaskForm):
                 raise ValidationError("Já existe um usuário com esse e-mail")
 
 
-class Avaliacao(FlaskForm):
+class Avaliacoes(FlaskForm):
     avaliacao = SelectField('★', coerce=int, choices=[0, 1, 2, 3, 4, 5])
     botao_submit_avaliar = SubmitField('Salvar')

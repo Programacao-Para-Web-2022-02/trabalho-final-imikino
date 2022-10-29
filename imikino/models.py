@@ -16,6 +16,7 @@ class Usuario(database.Model, UserMixin):
     email = database.Column(database.String, nullable=False, unique=True)
     senha = database.Column(database.String, nullable=False)
     foto_perfil = database.Column(database.String, default='default.jpg')
+    avalicoes = database.relationship('Avaliacao', backref='autor', lazy=True)
 
 
 class Jogos(database.Model):
@@ -26,4 +27,14 @@ class Jogos(database.Model):
     genero = database.Column(database.String, nullable=False)
     desenvolvedor = database.Column(database.String, nullable=False)
     foto_jogo = database.Column(database.String, nullable=False)
-    
+    media_jogos = database.Column(database.String, nullable=True)
+    avalicoes = database.relationship('Avaliacao', backref='jogo', lazy=True)
+
+
+class Avaliacao(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+
+    id_usuario = database.Column(database.Integer, database.ForeignKey('usuario.id'), nullable=False)
+    id_jogos = database.Column(database.Integer, database.ForeignKey('jogos.id'), nullable=False)
+
+    avaliacao = database.Column(database.Integer)
