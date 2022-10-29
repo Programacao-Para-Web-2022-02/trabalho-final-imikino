@@ -148,13 +148,15 @@ def jogos():
     jogo5 = Jogos(nome='Overwatch', lancamento='2016', descricao='Overwatch é um jogo eletrônico multijogador de tiro em primeira pessoa desenvolvido e publicado pela Blizzard Entertainment', genero='FPS, multijogador', desenvolvedor='Blizzard', foto_jogo='ow.jpg')
     jogo6 = Jogos(nome='Stardew Valley', lancamento='2016', descricao='Stardew Valley é um jogo de videogame, dos gêneros RPG e simulação, desenvolvido por Eric Barone e publicado pela ConcernedApe e pela Chucklefish', genero='simulação, RPG', desenvolvedor='ConcernedApe', foto_jogo='stardewvalley.jpg')
     lista_jogos = [jogo1, jogo2, jogo3, jogo4, jogo5, jogo6]
+
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
         return render_template('jogos.html', foto_perfil=foto_perfil, lista_jogos=lista_jogos)
 
-@app.route('/jogos/avaliar', methods=['GET', 'POST'])
+
+@app.route('/jogos/<nome>', methods=['GET', 'POST'])
 @login_required #precisa estar logado para acessar essa página
-def avaliar():
+def avaliar(nome):
     form = Avaliacao()
 
     jogo1 = Jogos(nome='Cuphead', lancamento='2017', descricao='Cuphead é um jogo eletrônico de run and gun e plataforma criado pelos irmãos canadenses Chad e Jared Moldenhauer através da Studio MDHR', genero='Shoot em up, Run and gun', desenvolvedor='MDHR', foto_jogo='cuphead.jpg')
@@ -164,6 +166,14 @@ def avaliar():
     jogo5 = Jogos(nome='Overwatch', lancamento='2016', descricao='Overwatch é um jogo eletrônico multijogador de tiro em primeira pessoa desenvolvido e publicado pela Blizzard Entertainment', genero='FPS, multijogador', desenvolvedor='Blizzard', foto_jogo='ow.jpg')
     jogo6 = Jogos(nome='Stardew Valley', lancamento='2016', descricao='Stardew Valley é um jogo de videogame, dos gêneros RPG e simulação, desenvolvido por Eric Barone e publicado pela ConcernedApe e pela Chucklefish', genero='simulação, RPG', desenvolvedor='ConcernedApe', foto_jogo='stardewvalley.jpg')
     lista_jogos = [jogo1, jogo2, jogo3, jogo4, jogo5, jogo6]
+
+    for jogos in lista_jogos:
+        if jogos.nome == nome:
+            jogo = jogos
+
+    if form.validate_on_submit():
+        return redirect(url_for('jogos'))
+
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('avaliar.html', foto_perfil=foto_perfil, lista_jogos=lista_jogos, form=form)
+        return render_template('avaliar.html', foto_perfil=foto_perfil, form=form, jogo=jogo)

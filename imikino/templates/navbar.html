@@ -6,6 +6,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse pt-4" id="navbarSupportedContent">
+      {% if request.path == url_for('home') %}
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" style="color: #ffffff; font-size: 1.2rem;" aria-current="page" href="{{ url_for('home') }}">Home</a>
@@ -17,6 +18,43 @@
           <a class="nav-link opacity-50" style="color: #ffffff; font-size: 1.2rem;" href="{{ url_for('jogos') }}">Jogos</a>
         </li>
       </ul>
+      {% elif request.path == url_for('usuarios') %}
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link opacity-50" style="color: #ffffff; font-size: 1.2rem;" aria-current="page" href="{{ url_for('home') }}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" style="color: #ffffff; font-size: 1.2rem;" href="{{ url_for('usuarios') }}">Usuarios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link opacity-50" style="color: #ffffff; font-size: 1.2rem;" href="{{ url_for('jogos') }}">Jogos</a>
+        </li>
+      </ul>
+      {% elif request.path == url_for('jogos') %}
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link opacity-50" style="color: #ffffff; font-size: 1.2rem;" aria-current="page" href="{{ url_for('home') }}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link opacity-50" style="color: #ffffff; font-size: 1.2rem;" href="{{ url_for('usuarios') }}">Usuarios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" style="color: #ffffff; font-size: 1.2rem;" href="{{ url_for('jogos') }}">Jogos</a>
+        </li>
+      </ul>
+      {% else %}
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link opacity-50" style="color: #ffffff; font-size: 1.2rem;" aria-current="page" href="{{ url_for('home') }}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link opacity-50" style="color: #ffffff; font-size: 1.2rem;" href="{{ url_for('usuarios') }}">Usuarios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link opacity-50" style="color: #ffffff; font-size: 1.2rem;" href="{{ url_for('jogos') }}">Jogos</a>
+        </li>
+      </ul>
+      {% endif %}
       {% if current_user.is_authenticated %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #ffffff; font-size: 1.2rem; margin-top: -1.2rem;">

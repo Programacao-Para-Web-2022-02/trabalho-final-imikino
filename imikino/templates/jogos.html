@@ -4,39 +4,33 @@
     <hr style="color: white; margin-bottom: -50px">
     <div class="div-main-usuarios container">
         {% for jogo in lista_jogos %}
-                    <div class="div-sub-main-jogos">
-                        <br>
-                        <div class="d-flex justify-content-center">
-                            <div class="contorno">
-                                <img class="imagem-perfil-jogo" src="../static/images/imgFaixa/{{ jogo.foto_jogo }}">
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center mt-2">
-                            <h4 class="mb-0 mt-0" style="color: white;">{{ jogo.nome }}</h4> 
-                        </div>
-                        <div class="d-flex justify-content-center mt-2">
-                            <h5 class="mb-0 mt-0" style="color: white;"> ★: 0</h5> 
-                        </div>
-                        <div class="d-flex justify-content-center mt-2">
-                            <span class="mb-0 mt-0" style="color: white;">{{ jogo.lancamento }} - {{ jogo.desenvolvedor }}</span>
-                        </div>
-                        <div class="d-flex justify-content-center mt-2">
-                            <span class="mb-0 mt-0" style="color: white;">Gênero - {{ jogo.genero }}</span>
-                        </div>
-                        <hr style="color: white;">
-                        <div class="d-flex align-items-center me-4 container" style="text-align: center; height: 96px;">
-                            <span class="rating" style="color: white;">{{ jogo.descricao }}</span>
-                        </div>
-                        {% if request.path == url_for('jogos') %}
-                            <div class="d-flex justify-content-center">
-                                <a href="{{ url_for('avaliar') }}"><button class='btn btn-primary mt-3'>avaliar</button></a>
-                            </div>
-                        {% elif request.path == url_for('avaliar') %}
-                            {% block form_avaliar %}
-                            {% endblock %}
-                        {% endif %}
+            <div class="div-sub-main-jogos">
+                <br>
+                <div class="d-flex justify-content-center">
+                    <div class="contorno">
+                        <img class="imagem-perfil-jogo" src="../static/images/imgFaixa/{{ jogo.foto_jogo }}">
                     </div>
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                    <h4 class="mb-0 mt-0" style="color: white;">{{ jogo.nome }}</h4> 
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                    <h5 class="mb-0 mt-0" style="color: white;"> ★: 0</h5> 
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                    <span class="mb-0 mt-0" style="color: white;">{{ jogo.lancamento }} - {{ jogo.desenvolvedor }}</span>
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                    <span class="mb-0 mt-0" style="color: white;">Gênero - {{ jogo.genero }}</span>
+                </div>
+                <hr style="color: white;">
+                <div class="d-flex align-items-center me-4 container" style="text-align: center; height: 96px;">
+                    <span class="rating" style="color: white;">{{ jogo.descricao }}</span>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a href="/jogos/{{ jogo.nome }}"><button class='btn btn-primary mt-3'>avaliar</button></a>
+                </div>
+            </div>
         {% endfor %}
     </div>
-
 {% endblock %}
