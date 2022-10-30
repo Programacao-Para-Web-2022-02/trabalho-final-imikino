@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy  # -> para criar o banco de dados
 from flask_bcrypt import Bcrypt  # -> para criptografar a senha do usuário
 from flask_login import LoginManager  # -> para fazer login no site
 
+
 app = Flask(__name__)
 app.app_context().push()
 

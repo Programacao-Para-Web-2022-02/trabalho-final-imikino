@@ -2,6 +2,7 @@ from imikino import app, database
 
 if __name__ == '__main__':
     with app.app_context():
+        #database.drop_all()
         #database.create_all()
         app.run(debug=True)
 
@@ -23,7 +24,7 @@ from main import database #desatualizado
 from models import Usuario #desatualizado
 
 from imikino import database
-from imikino.models import Usuario
+from imikino.models import Usuario, Jogos, Avaliacao
 database.create_all()
 
 comandos para mexer no banco de dados:

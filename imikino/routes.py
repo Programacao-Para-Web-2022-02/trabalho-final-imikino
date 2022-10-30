@@ -6,6 +6,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
 from PIL import Image #vamos usar para reduzir o tamanho da imagem
+from sqlalchemy.sql import func
 
 
 @app.route('/')
@@ -149,6 +150,11 @@ def jogos():
     jogo6 = Jogos(id= 6, nome='Stardew Valley', lancamento='2016', descricao='Stardew Valley é um jogo de videogame, dos gêneros RPG e simulação, desenvolvido por Eric Barone e publicado pela ConcernedApe e pela Chucklefish', genero='simulação, RPG', desenvolvedor='ConcernedApe', foto_jogo='stardewvalley.jpg')
     lista_jogos = [jogo1, jogo2, jogo3, jogo4, jogo5, jogo6]
 
+    '''total = 0
+    for avaliacao in Avaliacao.query.all():
+        total += int(avaliacao.avaliacao)
+    media = total / len(Avaliacao.query.all())
+    media = f'{media:.2f}'''
 
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
@@ -176,11 +182,12 @@ def avaliar(nome):
         if jogos.nome == nome:
             jogo = jogos
 
-
     if form.validate_on_submit():
         avaliacao = Avaliacao(id_usuario=current_user.id, id_jogos=jogo.id, avaliacao=int(form.avaliacao.data))
         database.session.add(avaliacao)
         database.session.commit()
+
+        #database.session.query(jogo.id, database.func.sum(Avaliacao.avaliacao).filter(jogo.id==1))
 
         return redirect(url_for('jogos')) 
 
