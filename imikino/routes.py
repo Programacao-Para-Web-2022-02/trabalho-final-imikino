@@ -29,6 +29,7 @@ def sobre():
 @login_required #precisa estar logado para acessar essa página
 def usuarios():
     lista_usuarios  = Usuario.query.all()
+
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
         return render_template('usuarios.html', foto_perfil=foto_perfil, lista_usuarios=lista_usuarios)
@@ -94,9 +95,11 @@ def sair():
 @app.route('/perfil')
 @login_required #precisa estar logado para acessar essa página
 def perfil():
+    lista_avaliacoes = Avaliacao.query.filter_by(id_usuario=current_user.id).all()
+    qntde_avaliacao = len(lista_avaliacoes)
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('perfil.html', foto_perfil=foto_perfil)
+        return render_template('perfil.html', foto_perfil=foto_perfil, qntde_avaliacao=qntde_avaliacao)
 
 
 def salvar_imagem(imagem):
@@ -115,6 +118,7 @@ def salvar_imagem(imagem):
     #salvar a imagem na pasta fotos_perfil
     imagem_reduzida.save(caminho_completo)
     return nome_arquivo
+
 
 @app.route('/perfil/editar', methods=['GET', 'POST'])
 @login_required #precisa estar logado para acessar essa página
@@ -142,7 +146,8 @@ def editar_perfil():
 @app.route('/jogos')
 @login_required #precisa estar logado para acessar essa página
 def jogos():
-    jogo1 = Jogos(id= 1, nome='Cuphead', lancamento='2017', descricao='Cuphead é um jogo eletrônico de run and gun e plataforma criado pelos irmãos canadenses Chad e Jared Moldenhauer através da Studio MDHR', genero='Shoot em up, Run and gun', desenvolvedor='MDHR', foto_jogo='cuphead.jpg')
+    #Apenas para criar os jogos no banco de dados
+    '''jogo1 = Jogos(id= 1, nome='Cuphead', lancamento='2017', descricao='Cuphead é um jogo eletrônico de run and gun e plataforma criado pelos irmãos canadenses Chad e Jared Moldenhauer através da Studio MDHR', genero='Shoot em up, Run and gun', desenvolvedor='MDHR', foto_jogo='cuphead.jpg')
     jogo2 = Jogos(id= 2, nome='Diablo III', lancamento='2012', descricao='Diablo III é um RPG de ação hack and slash desenvolvido pela Blizzard Entertainment, o terceiro título da série Diablo', genero='RPG, Hack and slash', desenvolvedor='Blizzard', foto_jogo='diablo.jpg')
     jogo3 = Jogos(id= 3, nome='Fortnite', lancamento='2017', descricao='Fortnite é um jogo eletrônico multijogador online, desenvolvido pela Epic Games e lançado como diferentes modos de jogo que compartilham a mesma jogabilidade e motor gráfico de jogo', genero='battle royale, multijogador', desenvolvedor='Epic Games', foto_jogo='fortnite.jpg')
     jogo4 = Jogos(id= 4, nome='League of Legends', lancamento='2009', descricao='League of Legends é um jogo eletrônico do gênero multiplayer online battle arena desenvolvido e publicado pela Riot Games', genero='MOBA, multijogador', desenvolvedor='Riot Games', foto_jogo='lol.jpg')
@@ -150,47 +155,136 @@ def jogos():
     jogo6 = Jogos(id= 6, nome='Stardew Valley', lancamento='2016', descricao='Stardew Valley é um jogo de videogame, dos gêneros RPG e simulação, desenvolvido por Eric Barone e publicado pela ConcernedApe e pela Chucklefish', genero='simulação, RPG', desenvolvedor='ConcernedApe', foto_jogo='stardewvalley.jpg')
     lista_jogos = [jogo1, jogo2, jogo3, jogo4, jogo5, jogo6]
 
-    '''total = 0
-    for avaliacao in Avaliacao.query.all():
-        total += int(avaliacao.avaliacao)
-    media = total / len(Avaliacao.query.all())
-    media = f'{media:.2f}'''
+    for jogo in lista_jogos:
+        database.session.add(jogo)
+    database.session.commit()'''
+    lista_jogos = Jogos.query.all()
+    
+    for jogo in lista_jogos:
+        lista_aval1 = []
+        lista_aval2 = []
+        lista_aval3 = []
+        lista_aval4 = []
+        lista_aval5 = []
+        lista_aval6 = []
+
+        if jogo.id == 1:
+            for aval1 in Avaliacao.query.filter_by(id_jogos=1).all():
+                lista_aval1.append(aval1.avaliacao)
+            if len(lista_aval1) == 0:
+                media1 = None
+            else:
+                media1 = sum(lista_aval1)/len(lista_aval1)
+                media1 = f'{media1:.1f}'
+                jogo.media_jogos = float(media1)
+                database.session.commit()
+        elif jogo.id == 2:
+            for aval1 in Avaliacao.query.filter_by(id_jogos=2).all():
+                lista_aval2.append(aval1.avaliacao)
+            if len(lista_aval2) == 0:
+                media1 = None
+            else:
+                media1 = sum(lista_aval2)/len(lista_aval2)
+                media1 = f'{media1:.1f}'
+                jogo.media_jogos = float(media1)
+                database.session.commit()
+        elif jogo.id == 3:
+            for aval1 in Avaliacao.query.filter_by(id_jogos=3).all():
+                lista_aval3.append(aval1.avaliacao)
+            if len(lista_aval3) == 0:
+                media1 = None
+            else:
+                media1 = sum(lista_aval3)/len(lista_aval3)
+                media1 = f'{media1:.1f}'
+                jogo.media_jogos = float(media1)
+                database.session.commit()
+        elif jogo.id == 4:
+            for aval1 in Avaliacao.query.filter_by(id_jogos=4).all():
+                lista_aval4.append(aval1.avaliacao)
+            if len(lista_aval4) == 0:
+                media1 = None
+            else:
+                media1 = sum(lista_aval4)/len(lista_aval4)
+                media1 = f'{media1:.1f}'
+                jogo.media_jogos = float(media1)
+                database.session.commit()
+        elif jogo.id == 5:
+            for aval1 in Avaliacao.query.filter_by(id_jogos=5).all():
+                lista_aval5.append(aval1.avaliacao)
+            if len(lista_aval5) == 0:
+                media1 = None
+            else:
+                media1 = sum(lista_aval5)/len(lista_aval5)
+                media1 = f'{media1:.1f}'
+                jogo.media_jogos = float(media1)
+                database.session.commit()
+        elif jogo.id == 6:
+            for aval1 in Avaliacao.query.filter_by(id_jogos=6).all():
+                lista_aval6.append(aval1.avaliacao)
+            if len(lista_aval6) == 0:
+                media1 = None
+            else:
+                media1 = sum(lista_aval6)/len(lista_aval6)
+                media1 = f'{media1:.1f}'
+                jogo.media_jogos = float(media1)
+                database.session.commit()
+
 
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('jogos.html', foto_perfil=foto_perfil, lista_jogos=lista_jogos)
+        return render_template('jogos.html', foto_perfil=foto_perfil, lista_jogos=lista_jogos, media1=media1)
 
 
 @app.route('/jogos/<nome>', methods=['GET', 'POST'])
 @login_required #precisa estar logado para acessar essa página
 def avaliar(nome):
     form = Avaliacoes()
-
-    jogo1 = Jogos(id= 1, nome='Cuphead', lancamento='2017', descricao='Cuphead é um jogo eletrônico de run and gun e plataforma criado pelos irmãos canadenses Chad e Jared Moldenhauer através da Studio MDHR', genero='Shoot em up, Run and gun', desenvolvedor='MDHR', foto_jogo='cuphead.jpg')
-    jogo2 = Jogos(id= 2, nome='Diablo III', lancamento='2012', descricao='Diablo III é um RPG de ação hack and slash desenvolvido pela Blizzard Entertainment, o terceiro título da série Diablo', genero='RPG, Hack and slash', desenvolvedor='Blizzard', foto_jogo='diablo.jpg')
-    jogo3 = Jogos(id= 3, nome='Fortnite', lancamento='2017', descricao='Fortnite é um jogo eletrônico multijogador online, desenvolvido pela Epic Games e lançado como diferentes modos de jogo que compartilham a mesma jogabilidade e motor gráfico de jogo', genero='battle royale, multijogador', desenvolvedor='Epic Games', foto_jogo='fortnite.jpg')
-    jogo4 = Jogos(id= 4, nome='League of Legends', lancamento='2009', descricao='League of Legends é um jogo eletrônico do gênero multiplayer online battle arena desenvolvido e publicado pela Riot Games', genero='MOBA, multijogador', desenvolvedor='Riot Games', foto_jogo='lol.jpg')
-    jogo5 = Jogos(id= 5, nome='Overwatch', lancamento='2016', descricao='Overwatch é um jogo eletrônico multijogador de tiro em primeira pessoa desenvolvido e publicado pela Blizzard Entertainment', genero='FPS, multijogador', desenvolvedor='Blizzard', foto_jogo='ow.jpg')
-    jogo6 = Jogos(id= 6, nome='Stardew Valley', lancamento='2016', descricao='Stardew Valley é um jogo de videogame, dos gêneros RPG e simulação, desenvolvido por Eric Barone e publicado pela ConcernedApe e pela Chucklefish', genero='simulação, RPG', desenvolvedor='ConcernedApe', foto_jogo='stardewvalley.jpg')
-    lista_jogos = [jogo1, jogo2, jogo3, jogo4, jogo5, jogo6]
-
-    '''for jogo in lista_jogos:
-        database.session.add(jogo)
-    database.session.commit()'''
+    lista_jogos = Jogos.query.all()
 
     for jogos in lista_jogos:
         if jogos.nome == nome:
             jogo = jogos
 
-    if form.validate_on_submit():
-        avaliacao = Avaliacao(id_usuario=current_user.id, id_jogos=jogo.id, avaliacao=int(form.avaliacao.data))
-        database.session.add(avaliacao)
+    lista_aval = []
+    if jogo.id == 1:
+        for aval1 in Avaliacao.query.filter_by(id_jogos=1).all():
+            lista_aval.append(aval1.avaliacao)
+    elif jogo.id == 2:
+        for aval1 in Avaliacao.query.filter_by(id_jogos=2).all():
+            lista_aval.append(aval1.avaliacao)
+    elif jogo.id == 3:
+        for aval1 in Avaliacao.query.filter_by(id_jogos=3).all():
+            lista_aval.append(aval1.avaliacao)
+    elif jogo.id == 4:
+        for aval1 in Avaliacao.query.filter_by(id_jogos=4).all():
+            lista_aval.append(aval1.avaliacao)
+    elif jogo.id == 5:
+        for aval1 in Avaliacao.query.filter_by(id_jogos=5).all():
+            lista_aval.append(aval1.avaliacao)
+    elif jogo.id == 6:
+        for aval1 in Avaliacao.query.filter_by(id_jogos=6).all():
+            lista_aval.append(aval1.avaliacao)
+
+    if len(lista_aval) == 0:
+        media = None
+    else:
+        media = sum(lista_aval)/len(lista_aval)
+        media = f'{media:.1f}'
+        jogo.media_jogos = float(media)
         database.session.commit()
 
-        #database.session.query(jogo.id, database.func.sum(Avaliacao.avaliacao).filter(jogo.id==1))
+    if form.validate_on_submit():
+        aval = Avaliacao.query.filter_by(id_usuario=current_user.id, id_jogos=jogo.id).first()
+        if aval:
+            aval.avaliacao = form.avaliacao.data
+            database.session.commit()
+        else:
+            avaliacao = Avaliacao(id_usuario=current_user.id, id_jogos=jogo.id, avaliacao=int(form.avaliacao.data))
+            database.session.add(avaliacao)
+            database.session.commit()
 
         return redirect(url_for('jogos')) 
 
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('avaliar.html', foto_perfil=foto_perfil, form=form, jogo=jogo)
+        return render_template('avaliar.html', foto_perfil=foto_perfil, form=form, jogo=jogo, media=media)
