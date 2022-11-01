@@ -1,3 +1,4 @@
+from types import NoneType
 from flask import render_template, flash, redirect, url_for, request
 from imikino import app, database, bcrypt
 from imikino.forms import FormLogin, FormCriarConta, FormEditarPerfil, Avaliacoes
@@ -285,9 +286,13 @@ def avaliar(nome):
             database.session.commit()
 
         return redirect(url_for('jogos')) 
+
     elif request.method == 'GET':
         aval = Avaliacao.query.filter_by(id_usuario=current_user.id, id_jogos=jogo.id).first()
-        form.avaliacao.data = aval.avaliacao
+        if aval == None:
+            pass
+        else:
+            form.avaliacao.data = aval.avaliacao
 
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
