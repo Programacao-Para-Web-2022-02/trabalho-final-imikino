@@ -55,7 +55,7 @@ body {
 /*faixa de jogos (home)*/
 
 .faixa-jogos {
-    width: 100vw;
+    width: 99.1vw;
     height: 311px;
     background-color: rgb(44, 105, 105);
     display: flex;
@@ -75,14 +75,6 @@ body {
 
 .jogo:hover {
     flex: 3;
-}
-
-#jogo1 {
-    width: 16.66%;
-    height: 100%;
-    background-position: center;
-    background-size: cover;
-    background-image: url(images/imgFaixa/cuphead.jpg);
 }
 
 .cartao {
@@ -120,8 +112,16 @@ body {
     border: 2px solid white; 
     border-radius: 30px;
     width: 100px;
-    height: 30px;
+    height: 27px;
     margin-right: 5px;
+}
+
+#jogo1 {
+    width: 16.66%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-image: url(images/imgFaixa/cuphead.jpg);
 }
 
 #jogo2 {
@@ -192,7 +192,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    width: 100vw;
+    width: 99.1vw;
     height: 60vh;
 }
 
