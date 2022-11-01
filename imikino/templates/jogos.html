@@ -38,6 +38,10 @@
                     <div class="d-flex justify-content-center mt-2">
                         <h5 class="mb-0 mt-0" style="color: white;"> <span style="color: yellow;">{{ '★'*5 }}</span>: {{ jogo.media_jogos }}</h5> 
                     </div>
+                {% else %}
+                    <div class="d-flex justify-content-center mt-2">
+                        <h5 class="mb-0 mt-0" style="color: white;"> <span style="color: yellow;">{{ '★' }}</span>: Sem avaliações </h5> 
+                    </div>
                 {% endif %}
                 <div class="d-flex justify-content-center mt-2">
                     <span class="mb-0 mt-0" style="color: white;">{{ jogo.lancamento }} - {{ jogo.desenvolvedor }}</span>
