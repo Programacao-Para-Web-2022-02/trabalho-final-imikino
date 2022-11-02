@@ -455,7 +455,7 @@ def avaliar(nome):
             database.session.add(avaliacao)
             database.session.commit()
 
-        return redirect(url_for('jogos')) 
+        return redirect(f'/jogos#{jogo.nome}') 
 
     elif request.method == 'GET':
         aval = Avaliacao.query.filter_by(id_usuario=current_user.id, id_jogos=jogo.id).first()
