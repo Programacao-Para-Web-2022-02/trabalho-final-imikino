@@ -70,8 +70,30 @@
         </div>
     </div>
     <div class="container1">
-        <div class="lançamentos"></div>
-        <div class="melhor-avaliados"></div>
-        <div class="mais-populares"></div>
+        <div class="favoritos">
+            <legend class="d-flex justify-content-center" style="color: white; font-size: 1.9rem;">Jogos Favoritos</legend>
+            <hr style="color: white;">
+            <div class="lista">
+
+            </div>
+        </div>
+        <div class="melhor-avaliados">
+            <legend class="d-flex justify-content-center" style="color: white; font-size: 1.9rem;">Melhores Jogos</legend>
+            <hr style="color: white;">
+            <div class="lista">
+                {% for jogo in lista_melhor_avaliado %}
+                    <span style="color: white; font-size: 1.6rem; margin-right: 5%; margin-left: 5%; font-family:Georgia, 'Times New Roman', Times, serif;"><span style="color: yellow;">{{ '★ ' }}</span>{{ jogo[1] }}</span>
+                    <span style="color: white; font-size: 1.4rem; font-family:Georgia, 'Times New Roman', Times, serif;">{{ jogo[0] }}</span>
+                    <br><br><br>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="mais-populares">
+            <legend class="d-flex justify-content-center" style="color: white; font-size: 1.9rem;">Jogos Mais Populares</legend>
+            <hr style="color: white;">
+            <div class="lista">
+
+            </div>
+        </div>
     </div>
 {% endblock %}

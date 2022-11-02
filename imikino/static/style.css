@@ -59,6 +59,7 @@ body {
     height: 311px;
     background-color: rgb(44, 105, 105);
     display: flex;
+    margin-bottom: -70px;
 }
 
 .jogo {
@@ -188,17 +189,21 @@ body {
 /*Home*/
 
 .container1 {
-    margin-top: 6vh;
+    margin-top: 5%;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    flex-wrap: wrap;
     width: 99.1vw;
     height: 60vh;
+    position: static;
 }
 
-.lançamentos {
-    width: 30vw;
+.favoritos {
+    margin-top: 40px;
+    width: 500px;
     height: 50vh;
+    min-height: 500px;
     background-image: linear-gradient(to right, rgb(40, 31, 41), rgb(27, 33, 37));
     border-radius: 20px;
     -webkit-animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
@@ -206,8 +211,10 @@ body {
 }
 
 .melhor-avaliados {
-    width: 30vw;
+    margin-top: 40px;
+    width: 500px;
     height: 50vh;
+    min-height: 500px;
     background-image: linear-gradient(to right, rgb(40, 31, 41), rgb(27, 33, 37));
     border-radius: 20px;
     -webkit-animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
@@ -215,12 +222,19 @@ body {
 }
 
 .mais-populares{
-    width: 30vw;
+    margin-top: 40px;
+    width: 500px;
     height: 50vh;
+    min-height: 500px;
     background-image: linear-gradient(to right, rgb(40, 31, 41), rgb(27, 33, 37));
     border-radius: 20px;
     -webkit-animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: shadow-drop-tb 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.lista {
+    height: 410px;
+    width: 100%;
 }
 
 /*Perfil*/
@@ -299,5 +313,40 @@ body {
     border-radius: 85px;
 }
 
-/*footer*/
+/*sobre*/
 
+.container-valores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-content: space-around;
+    align-items: center;
+    height: 500px;
+    width: 100%;
+}
+
+.valores {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 230px;
+    width: 518px;
+    margin: 10px;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+.valores p {
+    padding: 5%;
+}
+
+.imagem-sobre {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+}
+
+.link_sobre:hover {
+    opacity: 0.6;
+    transition: 0.4s;
+}
