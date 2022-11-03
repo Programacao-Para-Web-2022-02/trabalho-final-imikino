@@ -141,6 +141,9 @@ def salvar_imagem(imagem):
 def editar_perfil():
     form = FormEditarPerfil()
 
+    lista_avaliacoes = Avaliacao.query.filter_by(id_usuario=current_user.id).all()
+    qntde_avaliacao = len(lista_avaliacoes)
+
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
@@ -159,7 +162,7 @@ def editar_perfil():
 
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('editarperfil.html', foto_perfil=foto_perfil, form=form)
+        return render_template('editarperfil.html', foto_perfil=foto_perfil, form=form, qntde_avaliacao=qntde_avaliacao)
 
 
 @app.route('/jogos')
