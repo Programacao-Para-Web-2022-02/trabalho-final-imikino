@@ -21,8 +21,26 @@ def home():
         lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
         lista_melhor_avaliado = lista_melhor_avaliado[0:5]
 
+        usuarios = Usuario.query.all()
+        lista_favoritos = []
+        for usuario in usuarios:
+            if 'Não Informado' in usuario.jogo_favorito:
+                pass
+            else:
+                lista_favoritos.append(usuario.jogo_favorito)
+
+        #id, nome, ocorrencia favorito
+        lista_lista_favorito = []
+        for jogo in jogos:
+            if lista_favoritos.count(jogo.nome) > 0:
+                lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
+
+        lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+        lista_lista_favorito = lista_lista_favorito[::-1]
+        lista_lista_favorito = lista_lista_favorito[:5]
+        
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado)
+        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito)
 
     jogos = Jogos.query.all()
     lista_melhor_avaliado = []
@@ -30,7 +48,25 @@ def home():
         lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
     lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
     lista_melhor_avaliado = lista_melhor_avaliado[0:5]
-    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado)
+
+    usuarios = Usuario.query.all()
+    lista_favoritos = []
+    for usuario in usuarios:
+        if 'Não Informado' in usuario.jogo_favorito:
+            pass
+        else:
+            lista_favoritos.append(usuario.jogo_favorito)
+
+    #id, nome, ocorrencia favorito
+    lista_lista_favorito = []
+    for jogo in jogos:
+        if lista_favoritos.count(jogo.nome) > 0:
+            lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
+
+    lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+    lista_lista_favorito = lista_lista_favorito[::-1]
+    lista_lista_favorito = lista_lista_favorito[:5]
+    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito)
 
 
 @app.route('/sobre')
@@ -104,7 +140,7 @@ def criarConta():
 @login_required #precisa estar logado para acessar essa página
 def sair():
     logout_user()
-    flash(f'Logout feito com sucesso, até logo', 'alert-primary')
+    flash(f'Logout feito com sucesso. Até logo!', 'alert-primary')
     return redirect(url_for('home'))
 
 

@@ -74,7 +74,11 @@
             <legend class="d-flex justify-content-center" style="color: white; font-size: 1.9rem;">Jogos Favoritos</legend>
             <hr style="color: white;">
             <div class="lista">
-
+                {% for favorito in lista_lista_favorito%}
+                    <span style="color: white; font-size: 1.6rem; margin-right: 5%; margin-left: 5%; font-family:Georgia, 'Times New Roman', Times, serif;"><span style="color: rgb(255, 0, 0);">{{ '♥ ' }}</span><span style="color: rgb(40, 31, 41);">{{ '.' }}</span>{{ favorito[1] }}</span>
+                    <span style="color: white; font-size: 1.4rem; font-family:Georgia, 'Times New Roman', Times, serif;"><a style="text-decoration: None; color: white;" href="/jogos/{{favorito[0]}}">{{ favorito[0] }}</a></span>
+                    <br><br><br>
+                {% endfor %}
             </div>
         </div>
         <div class="melhor-avaliados">
@@ -83,7 +87,7 @@
             <div class="lista">
                 {% for jogo in lista_melhor_avaliado %}
                     <span style="color: white; font-size: 1.6rem; margin-right: 5%; margin-left: 5%; font-family:Georgia, 'Times New Roman', Times, serif;"><span style="color: yellow;">{{ '★ ' }}</span>{{ jogo[1] }}</span>
-                    <span style="color: white; font-size: 1.4rem; font-family:Georgia, 'Times New Roman', Times, serif;"><a style="text-decoration: None; color: white;" href="/jogos#{{jogo[0]}}">{{ jogo[0] }}</a></span>
+                    <span style="color: white; font-size: 1.4rem; font-family:Georgia, 'Times New Roman', Times, serif;"><a style="text-decoration: None; color: white;" href="/jogos/{{jogo[0]}}">{{ jogo[0] }}</a></span>
                     <br><br><br>
                 {% endfor %}
             </div>
@@ -92,7 +96,9 @@
             <legend class="d-flex justify-content-center" style="color: white; font-size: 1.9rem;">Jogos Mais Populares</legend>
             <hr style="color: white;">
             <div class="lista">
-
+                <span style="color: white; font-size: 1.6rem; margin-right: 5%; margin-left: 5%; font-family:Georgia, 'Times New Roman', Times, serif;"><span style="color: yellow;">{{ '🍀 ' }}</span>{{ 1 }}</span>
+                <span style="color: white; font-size: 1.4rem; font-family:Georgia, 'Times New Roman', Times, serif;"><a style="text-decoration: None; color: white;" href="">{{ 'NomeJogo' }}</a></span>
+                <br><br><br>
             </div>
         </div>
     </div>

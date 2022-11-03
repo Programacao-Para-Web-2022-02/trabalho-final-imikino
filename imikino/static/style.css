@@ -222,7 +222,7 @@ body {
     height: 100%;
     background-position: center;
     background-size: cover;
-    background-image: url(images/imgFaixa/cupheadF.jpg);
+    background-image: url(images/imgFaixa/cupheadF.png);
 }
 
 #jogo2 {
@@ -238,7 +238,7 @@ body {
     height: 100%;
     background-position: center;
     background-size: cover;
-    background-image: url(images/imgFaixa/fortnite.jpg);
+    background-image: url(images/imgFaixa/fortniteF.jpg);
 }
 
 #jogo4 {
