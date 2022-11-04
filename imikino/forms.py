@@ -9,9 +9,9 @@ from flask_login import current_user
 
 class FormCriarConta(FlaskForm):
     username = StringField('Nickname', validators=[DataRequired()])
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    email = StringField('E-mail', validators=[DataRequired(), Email(message='E-mail inválido, preencha um e-mail válido para continuar')])
     senha = PasswordField('Senha', validators=[DataRequired(), Length(6, 20)])
-    confirmacao_senha = PasswordField('Confirmação da Senha', validators=[DataRequired(), EqualTo('senha')])
+    confirmacao_senha = PasswordField('Confirmação da Senha', validators=[DataRequired(), EqualTo('senha', message='As senhas devem ser iguais')])
     botao_submit_criarconta = SubmitField('Criar Conta')
 
 
