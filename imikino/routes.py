@@ -204,7 +204,8 @@ def editar_perfil():
 @app.route('/jogos')
 @login_required #precisa estar logado para acessar essa página
 def jogos():
-    '''#Apenas para criar os jogos no banco de dados
+    '''
+    #Apenas para criar os jogos no banco de dados
     jogo1 = Jogos(id= 1, nome='Cuphead', lancamento='2017', descricao='Cuphead é um jogo eletrônico de run and gun e plataforma criado pelos irmãos canadenses Chad e Jared Moldenhauer através da Studio MDHR', genero='Shoot em up, Run and gun', desenvolvedor='MDHR', foto_jogo='cuphead.jpg')
     jogo2 = Jogos(id= 2, nome='Diablo III', lancamento='2012', descricao='Diablo III é um RPG de ação hack and slash desenvolvido pela Blizzard Entertainment, o terceiro título da série Diablo', genero='RPG, Hack and slash', desenvolvedor='Blizzard', foto_jogo='diablo.jpg')
     jogo3 = Jogos(id= 3, nome='Fortnite', lancamento='2017', descricao='Fortnite é um jogo eletrônico multijogador online, desenvolvido pela Epic Games e lançado como diferentes modos de jogo que compartilham a mesma jogabilidade e motor gráfico de jogo', genero='battle royale, multijogador', desenvolvedor='Epic Games', foto_jogo='fortnite.jpg')
@@ -218,9 +219,9 @@ def jogos():
     jogo11 = Jogos(id= 11, nome='Cities: Skylines', lancamento='2015', descricao='Cities: Skylines é um jogo de construção de cidade singleplayer produzido pela Colossal Order e publicado pela Paradox Interactive.', genero='Simulador, Gerenciamento', desenvolvedor='Colossal Order', foto_jogo='CitiesSkylines.jpg')
     jogo12 = Jogos(id= 12, nome='Child of Light', lancamento='2014', descricao='Child of Light é um jogo de RPG de plataforma desenvolvido pela Ubisoft Montreal.', genero='RPG, Plataforma', desenvolvedor='Ubisoft', foto_jogo='child_of_light.jpg')
     jogo13 = Jogos(id= 13, nome='Doki Doki Literature Club!', lancamento='2017', descricao='Doki Doki Literature Club! é um jogo eletrônico de visual novel desenvolvida pela Team Salvato.', genero='Visual Novel, Horror', desenvolvedor='Dan Salvato', foto_jogo='doki-doki.jpg')
-    jogo14 = Jogos(id=14,nome='Persona 5',lancamento='2016',descricao='O jogo é cronologicamente a sexta edição da série Persona, que faz parte principalmente da franquia Megami Tensei.',genero='RPG,Social simulation game',desenvolvedor='Atlus', foto_jogo='persona_5.jpg')
-    jogo15 = Jogos(id=15,nome='Grand Theft Auto V',lancamento='2013',descricao='Grand Theft Auto V é um jogo acompanha a história da campanha um jogador seguindo três criminosos e seus esforços para realizarem assaltos sob a pressão de uma agência governamental.',genero='Tiro, Mundo aberto',desenvolvedor='Rockstar Games',foto_jogo='GTA.jpg')
-    jogo16 = Jogos(id=16,nome='The Legend of Zelda',lancamento='2017',descricao='Viaje pelos vastos campos, florestas e montanhas enquanto descobre o que aconteceu com o reino de Hyrule nesta deslumbrante aventura a céu aberto.',genero='(RPG, Mundo aberto',desenvolvedor='Nintendo',foto_jogo='Zelda.jpg')
+    jogo14 = Jogos(id=14,nome='Persona 5', lancamento='2016', descricao='O jogo é cronologicamente a sexta edição da série Persona, que faz parte principalmente da franquia Megami Tensei.', genero='RPG,Social simulation game', desenvolvedor='Atlus', foto_jogo='persona_5.jpg')
+    jogo15 = Jogos(id=15, nome='Grand Theft Auto V', lancamento='2013', descricao='Grand Theft Auto V é um jogo acompanha a história da campanha um jogador seguindo três criminosos e seus esforços para realizarem assaltos sob a pressão de uma agência governamental.', genero='Tiro, Mundo aberto', desenvolvedor='Rockstar Games', foto_jogo='GTA.jpg')
+    jogo16 = Jogos(id=16, nome='The Legend of Zelda', lancamento='2017', descricao='Viaje pelos vastos campos, florestas e montanhas enquanto descobre o que aconteceu com o reino de Hyrule nesta deslumbrante aventura a céu aberto.', genero='(RPG, Mundo aberto', desenvolvedor='Nintendo', foto_jogo='Zelda.jpg')
     lista_jogos = [jogo1, jogo2, jogo3, jogo4, jogo5, jogo6, jogo7, jogo8, jogo9, jogo10, jogo11, jogo12, jogo13, jogo14, jogo15, jogo16]
 
     for jogo in lista_jogos:
