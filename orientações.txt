@@ -1,25 +1,14 @@
 '''
-Passo a passo de downloads e comandos:
-
-pip install Flask
-
-pip install flask-wtf (Criação de formulários com FlaskForm)
-#Temos que baixar o Email do wtforms (por alugm motivo ele não vem junto)
-pip install email_validator
-
-#Agora temos que baixar o sql alchemy que vai ser o nosso banco de dados
-pip install sqlalchemy
-pip install flask-sqlalchemy 
+Passo a passo de comandos para o terminal Python:
 
 #como criar e consultar o banco de dados
-from main import database #desatualizado
-from models import Usuario #desatualizado
 
 from imikino import database
 from imikino.models import Usuario, Jogos, Avaliacao
+
 database.create_all()
 
-comandos para mexer no banco de dados:
+#comandos para mexer no banco de dados:
 #criar usuário
 usuario = Usuario(username='Leo', email='leo@gmail.com', senha='123123')
 usuario2 = Usuario(username='Lucas', email='lucas@gmail.com', senha='123123')
@@ -51,47 +40,21 @@ database.create_all()
 
 #Agora o BD vai estar vazio
 
-
-
------------------------------
-Para conferir se deu certo
-
-from imikino import database
-from imikino.models import Usuario
-
-Usuario.query.all() -> ver os usuários do site
-usuario = Usuario.query.first()
-usuario.username
-usuario.email
-usuario.senha
-
+---------------------------
+#filtrar
 usuario2 = Usuario.query.filter_by(username='leozin2').first()
 usuario2.senha -> b'$2b$12$Sjt1VqGrBW34pRJfzFaC4uSrCFbKtGL6Mc7PVIucHT.k0Xw1Nr/jy' #a senha está criptografada
-'''
 
-'''
-#baixar o que iremos usar para criptografar a senha
-pip install flask-bcrypt
-
------------------
-#baixar o que iremos usar para fazer o login no site
-pip install flask-login
-
------------------
-#baixar o que iremos usar para reduzir o tamanho da imagem ao editar o perfil
-pip install Pillow
-
+---------------------------
 #Ativando o ambiente virtual
 #criar o arquivo
 python -m venv venv 
+
 #ativar o ambiente virtual
 .\venv\Scripts\Activate.ps1
 
 -----------------
-#instalar o gunicorn para colocar o site no ar com o heroku
-pip install gunicorn
-'''
-"""
+
 Para dar commit no heroku:
 git add .
 git commit -m 'comentario'
