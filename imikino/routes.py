@@ -1,5 +1,5 @@
-from types import NoneType
-from flask import render_template, flash, redirect, url_for, request
+import requests
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from imikino import app, database, bcrypt
 from imikino.forms import FormLogin, FormCriarConta, FormEditarPerfil, Avaliacoes
 from imikino.models import Usuario, Jogos, Avaliacao
@@ -8,6 +8,24 @@ import secrets
 import os
 from PIL import Image #vamos usar para reduzir o tamanho da imagem
 from sqlalchemy.sql import func
+
+
+NoneType = type(None)
+
+
+# Exemplo de requisição usando SteamAPI
+@app.route('/steam')
+def steam():
+    response = requests.get("http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/"
+                            "?key=F5EAABA4A3A664FE469560765E3839E4&steamid=76561198317620129&format=json")
+    return jsonify(response.json())
+
+
+# @app.route('/steamImage')
+# def steamImage():
+#     response = requests.get("http://media.steampowered.com/steamcommunity/public/images/apps/108600/2bd4642ae337e378e7b04a19d19683425c5f81a4.jpg")
+#
+#     return response.request
 
 
 @app.route('/')
