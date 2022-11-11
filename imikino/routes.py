@@ -1,5 +1,5 @@
 import requests
-from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask import render_template, flash, redirect, url_for, request, jsonify, make_response
 from imikino import app, database, bcrypt
 from imikino.forms import FormLogin, FormCriarConta, FormEditarPerfil, Avaliacoes
 from imikino.models import Usuario, Jogos, Avaliacao
@@ -8,17 +8,28 @@ import secrets
 import os
 from PIL import Image #vamos usar para reduzir o tamanho da imagem
 from sqlalchemy.sql import func
-
-
-NoneType = type(None)
+import pandas as pd
+import json
 
 
 # Exemplo de requisição usando SteamAPI
-@app.route('/steam')
-def steam():
-    response = requests.get("http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/"
-                            "?key=F5EAABA4A3A664FE469560765E3839E4&steamid=76561198317620129&format=json")
-    return jsonify(response.json())
+
+
+def steam(id):
+    response = requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/"
+                            f"?key=F5EAABA4A3A664FE469560765E3839E4&steamid={id}&format=json&include_appinfo=true").text
+    response_info = json.loads(response)
+    game_list = []
+    for game_info in response_info['response']['games']:
+        game_list.append([game_info['appid'], game_info['name'], game_info['playtime_forever']])
+    games_df = pd.DataFrame(data=game_list, columns=['appid', 'name', 'playtime_forever'])
+    lista_jogo_horas = []
+    for value in games_df.get("name"):
+        lista_jogo_horas.append([value])
+    for i, value in enumerate(games_df.get("playtime_forever")):
+        lista_jogo_horas[i].append(value)
+    return lista_jogo_horas
+    return jsonify(response)
 
 
 # @app.route('/steamImage')
@@ -31,6 +42,23 @@ def steam():
 @app.route('/')
 def home():
     if current_user.is_authenticated:
+        if current_user.id == 1:
+            id = "76561198369749103"
+        elif current_user.id == 2:
+            id = "76561198159550814"
+        elif current_user.id == 3:
+            id = "76561198148542851"
+        else:
+            id = "76561198317620129"
+        lista_jogo_horas = steam(id)
+        lista_jogo_horas = sorted(lista_jogo_horas, key = lambda x: x[1], reverse = True)
+
+        for lista in lista_jogo_horas:
+            lista[1] = int(lista[1]/60)
+
+        if len(lista_jogo_horas) > 3:
+            lista_jogo_horas = lista_jogo_horas[0:3]
+
 
         jogos = Jogos.query.all()
         lista_melhor_avaliado = []
@@ -58,7 +86,9 @@ def home():
         lista_lista_favorito = lista_lista_favorito[:5]
         
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito)
+        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, lista_jogo_horas=lista_jogo_horas)
+
+    faca_login = 'Faça login para acessar essa lista'
 
     jogos = Jogos.query.all()
     lista_melhor_avaliado = []
@@ -84,7 +114,7 @@ def home():
     lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
     lista_lista_favorito = lista_lista_favorito[::-1]
     lista_lista_favorito = lista_lista_favorito[:5]
-    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito)
+    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, faca_login=faca_login)
 
 
 @app.route('/sobre')
@@ -239,7 +269,7 @@ def jogos():
     jogo13 = Jogos(id= 13, nome='Doki Doki Literature Club!', lancamento='2017', descricao='Doki Doki Literature Club! é um jogo eletrônico de visual novel desenvolvida pela Team Salvato.', genero='Visual Novel, Horror', desenvolvedor='Dan Salvato', foto_jogo='doki-doki.jpg')
     jogo14 = Jogos(id=14,nome='Persona 5', lancamento='2016', descricao='O jogo é cronologicamente a sexta edição da série Persona, que faz parte principalmente da franquia Megami Tensei.', genero='RPG,Social simulation game', desenvolvedor='Atlus', foto_jogo='persona_5.jpg')
     jogo15 = Jogos(id=15, nome='Grand Theft Auto V', lancamento='2013', descricao='Grand Theft Auto V é um jogo acompanha a história da campanha um jogador seguindo três criminosos e seus esforços para realizarem assaltos sob a pressão de uma agência governamental.', genero='Tiro, Mundo aberto', desenvolvedor='Rockstar Games', foto_jogo='GTA.jpg')
-    jogo16 = Jogos(id=16, nome='The Legend of Zelda', lancamento='2017', descricao='Viaje pelos vastos campos, florestas e montanhas enquanto descobre o que aconteceu com o reino de Hyrule nesta deslumbrante aventura a céu aberto.', genero='(RPG, Mundo aberto', desenvolvedor='Nintendo', foto_jogo='Zelda.jpg')
+    jogo16 = Jogos(id=16, nome='The Legend of Zelda', lancamento='2017', descricao='Viaje pelos vastos campos, florestas e montanhas enquanto descobre o que aconteceu com o reino de Hyrule nesta deslumbrante aventura a céu aberto.', genero='RPG, Mundo aberto', desenvolvedor='Nintendo', foto_jogo='Zelda.jpg')
     lista_jogos = [jogo1, jogo2, jogo3, jogo4, jogo5, jogo6, jogo7, jogo8, jogo9, jogo10, jogo11, jogo12, jogo13, jogo14, jogo15, jogo16]
 
     for jogo in lista_jogos:
