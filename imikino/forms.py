@@ -60,3 +60,8 @@ class FormEditarPerfil(FlaskForm):
 class Avaliacoes(FlaskForm):
     avaliacao = SelectField('★', coerce=int, choices=[0, 1, 2, 3, 4, 5])
     botao_submit_avaliar = SubmitField('Salvar')
+
+
+class IdSteam(FlaskForm):
+    id_steam = StringField('Id Steam')
+    botao_submit_pesquisar = SubmitField('Pesquisar')

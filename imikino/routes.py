@@ -1,7 +1,7 @@
 import requests
 from flask import render_template, flash, redirect, url_for, request, jsonify, make_response
 from imikino import app, database, bcrypt
-from imikino.forms import FormLogin, FormCriarConta, FormEditarPerfil, Avaliacoes
+from imikino.forms import FormLogin, FormCriarConta, FormEditarPerfil, Avaliacoes, IdSteam
 from imikino.models import Usuario, Jogos, Avaliacao
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -39,25 +39,28 @@ def steam(id):
 #     return response.request
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
+    form = IdSteam()
+
     if current_user.is_authenticated:
-        if current_user.id == 1:
-            id = "76561198369749103"
-        elif current_user.id == 2:
-            id = "76561198159550814"
-        elif current_user.id == 3:
-            id = "76561198148542851"
-        else:
-            id = "76561198317620129"
-        lista_jogo_horas = steam(id)
-        lista_jogo_horas = sorted(lista_jogo_horas, key = lambda x: x[1], reverse = True)
+        if form.validate_on_submit():
+            id = form.id_steam.data
+            
+            try:
+                lista_jogo_horas = steam(id)
 
-        for lista in lista_jogo_horas:
-            lista[1] = int(lista[1]/60)
+                lista_jogo_horas = sorted(lista_jogo_horas, key = lambda x: x[1], reverse = True)
 
-        if len(lista_jogo_horas) > 3:
-            lista_jogo_horas = lista_jogo_horas[0:3]
+                for lista in lista_jogo_horas:
+                    lista[1] = int(lista[1]/60)
+
+                if len(lista_jogo_horas) > 3:
+                    lista_jogo_horas = lista_jogo_horas[0:3]
+                return redirect(f'/{id}') 
+
+            except:
+                return redirect(f'/error') 
 
 
         jogos = Jogos.query.all()
@@ -86,9 +89,7 @@ def home():
         lista_lista_favorito = lista_lista_favorito[:5]
         
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, lista_jogo_horas=lista_jogo_horas)
-
-    faca_login = 'Faça login para acessar essa lista'
+        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, form=form)
 
     jogos = Jogos.query.all()
     lista_melhor_avaliado = []
@@ -114,7 +115,107 @@ def home():
     lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
     lista_lista_favorito = lista_lista_favorito[::-1]
     lista_lista_favorito = lista_lista_favorito[:5]
-    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, faca_login=faca_login)
+    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito)
+
+
+
+@app.route('/<id>')
+@login_required #precisa estar logado para acessar essa página
+def home_id(id):
+    form = IdSteam()
+
+    if current_user.is_authenticated:
+        if id == 'error':
+            jogos = Jogos.query.all()
+            lista_melhor_avaliado = []
+            for jogo in jogos:
+                lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
+            lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
+            lista_melhor_avaliado = lista_melhor_avaliado[0:5]
+
+            usuarios = Usuario.query.all()
+            lista_favoritos = []
+            for usuario in usuarios:
+                if 'Não Informado' in usuario.jogo_favorito:
+                    pass
+                else:
+                    lista_favoritos.append(usuario.jogo_favorito)
+
+            #id, nome, ocorrencia favorito
+            lista_lista_favorito = []
+            for jogo in jogos:
+                if lista_favoritos.count(jogo.nome) > 0:
+                    lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
+
+            lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+            lista_lista_favorito = lista_lista_favorito[::-1]
+            lista_lista_favorito = lista_lista_favorito[:5]
+            foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
+            return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, form=form)
+
+        lista_jogo_horas = steam(id)
+        lista_jogo_horas = sorted(lista_jogo_horas, key = lambda x: x[1], reverse = True)
+
+        for lista in lista_jogo_horas:
+            lista[1] = int(lista[1]/60)
+
+        if len(lista_jogo_horas) > 3:
+            lista_jogo_horas = lista_jogo_horas[0:3]
+
+        jogos = Jogos.query.all()
+        lista_melhor_avaliado = []
+        for jogo in jogos:
+            lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
+        lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
+        lista_melhor_avaliado = lista_melhor_avaliado[0:5]
+
+        usuarios = Usuario.query.all()
+        lista_favoritos = []
+        for usuario in usuarios:
+            if 'Não Informado' in usuario.jogo_favorito:
+                pass
+            else:
+                lista_favoritos.append(usuario.jogo_favorito)
+
+        #id, nome, ocorrencia favorito
+        lista_lista_favorito = []
+        for jogo in jogos:
+            if lista_favoritos.count(jogo.nome) > 0:
+                lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
+
+        lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+        lista_lista_favorito = lista_lista_favorito[::-1]
+        lista_lista_favorito = lista_lista_favorito[:5]
+        
+        foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
+        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, form=form, lista_jogo_horas=lista_jogo_horas)
+
+    jogos = Jogos.query.all()
+    lista_melhor_avaliado = []
+    for jogo in jogos:
+        lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
+    lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
+    lista_melhor_avaliado = lista_melhor_avaliado[0:5]
+
+    usuarios = Usuario.query.all()
+    lista_favoritos = []
+    for usuario in usuarios:
+        if 'Não Informado' in usuario.jogo_favorito:
+            pass
+        else:
+            lista_favoritos.append(usuario.jogo_favorito)
+
+    #id, nome, ocorrencia favorito
+    lista_lista_favorito = []
+    for jogo in jogos:
+        if lista_favoritos.count(jogo.nome) > 0:
+            lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
+
+    lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+    lista_lista_favorito = lista_lista_favorito[::-1]
+    lista_lista_favorito = lista_lista_favorito[:5]
+    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito)
+
 
 
 @app.route('/sobre')

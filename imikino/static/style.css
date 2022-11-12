@@ -337,6 +337,14 @@ body {
     width: 100%;
 }
 
+.listaL {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  width: 100%;
+}
+
 .link-favorito:hover {
   background-image: linear-gradient(to bottom, rgb(255, 255, 255), steelblue);
   background-clip: text;
