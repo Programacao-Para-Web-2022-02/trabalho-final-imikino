@@ -6,7 +6,7 @@ from imikino.models import Usuario, Jogos, Avaliacao
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
-from PIL import Image #vamos usar para reduzir o tamanho da imagem
+from PIL import Image  # vamos usar para reduzir o tamanho da imagem
 from sqlalchemy.sql import func
 import pandas as pd
 import json
@@ -17,7 +17,7 @@ import json
 
 def steam(id):
     response = requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/"
-                            f"?key=F5EAABA4A3A664FE469560765E3839E4&steamid={id}&format=json&include_appinfo=true").text
+                            f"?key=4C9E5612B329282094A93C5599CE7ED4&steamid={id}&format=json&include_appinfo=true").text
     response_info = json.loads(response)
     game_list = []
     for game_info in response_info['response']['games']:
@@ -29,7 +29,6 @@ def steam(id):
     for i, value in enumerate(games_df.get("playtime_forever")):
         lista_jogo_horas[i].append(value)
     return lista_jogo_horas
-    return jsonify(response)
 
 
 # @app.route('/steamImage')
@@ -46,28 +45,27 @@ def home():
     if current_user.is_authenticated:
         if form.validate_on_submit():
             id = form.id_steam.data
-            
+
             try:
                 lista_jogo_horas = steam(id)
 
-                lista_jogo_horas = sorted(lista_jogo_horas, key = lambda x: x[1], reverse = True)
+                lista_jogo_horas = sorted(lista_jogo_horas, key=lambda x: x[1], reverse=True)
 
                 for lista in lista_jogo_horas:
-                    lista[1] = int(lista[1]/60)
+                    lista[1] = int(lista[1] / 60)
 
                 if len(lista_jogo_horas) > 3:
                     lista_jogo_horas = lista_jogo_horas[0:3]
-                return redirect(f'/{id}') 
+                return redirect(f'/{id}')
 
             except:
-                return redirect(f'/error') 
-
+                return redirect(f'/error')
 
         jogos = Jogos.query.all()
         lista_melhor_avaliado = []
         for jogo in jogos:
             lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
-        lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
+        lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l: l[1], reverse=True)
         lista_melhor_avaliado = lista_melhor_avaliado[0:5]
 
         usuarios = Usuario.query.all()
@@ -78,24 +76,25 @@ def home():
             else:
                 lista_favoritos.append(usuario.jogo_favorito)
 
-        #id, nome, ocorrencia favorito
+        # id, nome, ocorrencia favorito
         lista_lista_favorito = []
         for jogo in jogos:
             if lista_favoritos.count(jogo.nome) > 0:
                 lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
 
-        lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+        lista_lista_favorito = sorted(lista_lista_favorito, key=lambda x: x[1])
         lista_lista_favorito = lista_lista_favorito[::-1]
         lista_lista_favorito = lista_lista_favorito[:5]
-        
+
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, form=form)
+        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado,
+                               lista_lista_favorito=lista_lista_favorito, form=form)
 
     jogos = Jogos.query.all()
     lista_melhor_avaliado = []
     for jogo in jogos:
         lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
-    lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
+    lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l: l[1], reverse=True)
     lista_melhor_avaliado = lista_melhor_avaliado[0:5]
 
     usuarios = Usuario.query.all()
@@ -106,21 +105,21 @@ def home():
         else:
             lista_favoritos.append(usuario.jogo_favorito)
 
-    #id, nome, ocorrencia favorito
+    # id, nome, ocorrencia favorito
     lista_lista_favorito = []
     for jogo in jogos:
         if lista_favoritos.count(jogo.nome) > 0:
             lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
 
-    lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+    lista_lista_favorito = sorted(lista_lista_favorito, key=lambda x: x[1])
     lista_lista_favorito = lista_lista_favorito[::-1]
     lista_lista_favorito = lista_lista_favorito[:5]
-    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito)
-
+    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado,
+                           lista_lista_favorito=lista_lista_favorito)
 
 
 @app.route('/<id>')
-@login_required #precisa estar logado para acessar essa página
+@login_required  # precisa estar logado para acessar essa página
 def home_id(id):
     form = IdSteam()
 
@@ -130,7 +129,7 @@ def home_id(id):
             lista_melhor_avaliado = []
             for jogo in jogos:
                 lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
-            lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
+            lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l: l[1], reverse=True)
             lista_melhor_avaliado = lista_melhor_avaliado[0:5]
 
             usuarios = Usuario.query.all()
@@ -141,23 +140,24 @@ def home_id(id):
                 else:
                     lista_favoritos.append(usuario.jogo_favorito)
 
-            #id, nome, ocorrencia favorito
+            # id, nome, ocorrencia favorito
             lista_lista_favorito = []
             for jogo in jogos:
                 if lista_favoritos.count(jogo.nome) > 0:
                     lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
 
-            lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+            lista_lista_favorito = sorted(lista_lista_favorito, key=lambda x: x[1])
             lista_lista_favorito = lista_lista_favorito[::-1]
             lista_lista_favorito = lista_lista_favorito[:5]
             foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-            return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, form=form)
+            return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado,
+                                   lista_lista_favorito=lista_lista_favorito, form=form)
 
         lista_jogo_horas = steam(id)
-        lista_jogo_horas = sorted(lista_jogo_horas, key = lambda x: x[1], reverse = True)
+        lista_jogo_horas = sorted(lista_jogo_horas, key=lambda x: x[1], reverse=True)
 
         for lista in lista_jogo_horas:
-            lista[1] = int(lista[1]/60)
+            lista[1] = int(lista[1] / 60)
 
         if len(lista_jogo_horas) > 3:
             lista_jogo_horas = lista_jogo_horas[0:3]
@@ -166,7 +166,7 @@ def home_id(id):
         lista_melhor_avaliado = []
         for jogo in jogos:
             lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
-        lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
+        lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l: l[1], reverse=True)
         lista_melhor_avaliado = lista_melhor_avaliado[0:5]
 
         usuarios = Usuario.query.all()
@@ -177,24 +177,25 @@ def home_id(id):
             else:
                 lista_favoritos.append(usuario.jogo_favorito)
 
-        #id, nome, ocorrencia favorito
+        # id, nome, ocorrencia favorito
         lista_lista_favorito = []
         for jogo in jogos:
             if lista_favoritos.count(jogo.nome) > 0:
                 lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
 
-        lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+        lista_lista_favorito = sorted(lista_lista_favorito, key=lambda x: x[1])
         lista_lista_favorito = lista_lista_favorito[::-1]
         lista_lista_favorito = lista_lista_favorito[:5]
-        
+
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
-        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito, form=form, lista_jogo_horas=lista_jogo_horas)
+        return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado,
+                               lista_lista_favorito=lista_lista_favorito, form=form, lista_jogo_horas=lista_jogo_horas)
 
     jogos = Jogos.query.all()
     lista_melhor_avaliado = []
     for jogo in jogos:
         lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
-    lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l:l[1], reverse=True)
+    lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l: l[1], reverse=True)
     lista_melhor_avaliado = lista_melhor_avaliado[0:5]
 
     usuarios = Usuario.query.all()
@@ -205,17 +206,17 @@ def home_id(id):
         else:
             lista_favoritos.append(usuario.jogo_favorito)
 
-    #id, nome, ocorrencia favorito
+    # id, nome, ocorrencia favorito
     lista_lista_favorito = []
     for jogo in jogos:
         if lista_favoritos.count(jogo.nome) > 0:
             lista_lista_favorito.append([jogo.nome, lista_favoritos.count(jogo.nome)])
 
-    lista_lista_favorito = sorted(lista_lista_favorito, key = lambda x: x[1])
+    lista_lista_favorito = sorted(lista_lista_favorito, key=lambda x: x[1])
     lista_lista_favorito = lista_lista_favorito[::-1]
     lista_lista_favorito = lista_lista_favorito[:5]
-    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado, lista_lista_favorito=lista_lista_favorito)
-
+    return render_template('home.html', lista_melhor_avaliado=lista_melhor_avaliado,
+                           lista_lista_favorito=lista_lista_favorito)
 
 
 @app.route('/sobre')
@@ -227,9 +228,9 @@ def sobre():
 
 
 @app.route('/usuarios')
-@login_required #precisa estar logado para acessar essa página
+@login_required  # precisa estar logado para acessar essa página
 def usuarios():
-    lista_usuarios  = Usuario.query.all()
+    lista_usuarios = Usuario.query.all()
 
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
@@ -249,10 +250,11 @@ def login():
             login_user(usuario, remember=form_login.lembrar_dados.data)
             # fez login com sucesso
             # exibir mensagem de sucesso -> flash
-            flash(f'Login feito com sucesso para o e-mail {form_login.email.data}', 'alert-primary')  # .data serve para pegar o que a pessoa escreveu no campo de texto
-              
-            #verificar se existie o parâmetro next (caso ele tenha tentado acessar uma página que só é permitida estando logado então ele ganha o parâmetro next=página que ele tentou acessar e ao fazer login ele em vez de ir para a home ele vai para o next)
-            par_next = request.args.get('next') #pegando o valor do parâmetro next e colocando em uma variável
+            flash(f'Login feito com sucesso para o e-mail {form_login.email.data}',
+                  'alert-primary')  # .data serve para pegar o que a pessoa escreveu no campo de texto
+
+            # verificar se existie o parâmetro next (caso ele tenha tentado acessar uma página que só é permitida estando logado então ele ganha o parâmetro next=página que ele tentou acessar e ao fazer login ele em vez de ir para a home ele vai para o next)
+            par_next = request.args.get('next')  # pegando o valor do parâmetro next e colocando em uma variável
             if par_next:
                 return redirect(par_next)
             # redirecionar para a home page -> redirect
@@ -279,14 +281,15 @@ def criarConta():
         # -----------------------
         # fez login com sucesso
         # exibir mensagem de sucesso -> flash
-        flash(f'Bem-vindo(a) ao time, {form_criarconta.username.data}!! Conta criada com sucesso', 'alert-primary')  # .data serve para pegar o que a pessoa escreveu no campo de texto
+        flash(f'Bem-vindo(a) ao time, {form_criarconta.username.data}!! Conta criada com sucesso',
+              'alert-primary')  # .data serve para pegar o que a pessoa escreveu no campo de texto
         # redirecionar para a home page -> redirect
         return redirect(url_for('login'))
     return render_template('criarConta.html', form_criarconta=form_criarconta)
 
 
 @app.route('/sair')
-@login_required #precisa estar logado para acessar essa página
+@login_required  # precisa estar logado para acessar essa página
 def sair():
     logout_user()
     flash(f'Logout feito com sucesso. Até logo!', 'alert-primary')
@@ -294,7 +297,7 @@ def sair():
 
 
 @app.route('/perfil')
-@login_required #precisa estar logado para acessar essa página
+@login_required  # precisa estar logado para acessar essa página
 def perfil():
     lista_avaliacoes = Avaliacao.query.filter_by(id_usuario=current_user.id).all()
     qntde_avaliacao = len(lista_avaliacoes)
@@ -304,25 +307,25 @@ def perfil():
 
 
 def salvar_imagem(imagem):
-    #adicionar um código aleatório no nome da imagem para evitar que duas imagens tenham o mesmo nome
+    # adicionar um código aleatório no nome da imagem para evitar que duas imagens tenham o mesmo nome
     codigo = secrets.token_hex(6)
     nome, extensao = os.path.splitext(imagem.filename)
     nome_arquivo = nome + codigo + extensao
 
-    caminho_completo = os.path.join(app.root_path, 'static/foto_perfil', nome_arquivo) #caminho da pasta imikino
+    caminho_completo = os.path.join(app.root_path, 'static/foto_perfil', nome_arquivo)  # caminho da pasta imikino
 
-    #reduzir o tamanho da imagem
+    # reduzir o tamanho da imagem
     tamanho = (400, 400)
     imagem_reduzida = Image.open(imagem)
     imagem_reduzida.thumbnail(tamanho)
 
-    #salvar a imagem na pasta fotos_perfil
+    # salvar a imagem na pasta fotos_perfil
     imagem_reduzida.save(caminho_completo)
     return nome_arquivo
 
 
 @app.route('/perfil/editar', methods=['GET', 'POST'])
-@login_required #precisa estar logado para acessar essa página
+@login_required  # precisa estar logado para acessar essa página
 def editar_perfil():
     form = FormEditarPerfil()
 
@@ -334,7 +337,7 @@ def editar_perfil():
         current_user.email = form.email.data
         current_user.jogo_favorito = form.jogo_favorito.data
         if form.foto_perfil.data:
-            #mudar o campo foto_perfil do usuario para o novo nome da imagem
+            # mudar o campo foto_perfil do usuario para o novo nome da imagem
             nome_imagem = salvar_imagem(form.foto_perfil.data)
             current_user.foto_perfil = nome_imagem
         database.session.commit()
@@ -351,7 +354,7 @@ def editar_perfil():
 
 
 @app.route('/jogos')
-@login_required #precisa estar logado para acessar essa página
+@login_required  # precisa estar logado para acessar essa página
 def jogos():
     '''
     #Apenas para criar os jogos no banco de dados
@@ -376,9 +379,9 @@ def jogos():
     for jogo in lista_jogos:
         database.session.add(jogo)
     database.session.commit()'''
-    
+
     lista_jogos = Jogos.query.all()
-    
+
     media1 = 0
     for jogo in lista_jogos:
         lista_aval1 = []
@@ -398,14 +401,13 @@ def jogos():
         lista_aval15 = []
         lista_aval16 = []
 
-
         if jogo.id == 1:
             for aval1 in Avaliacao.query.filter_by(id_jogos=1).all():
                 lista_aval1.append(aval1.avaliacao)
             if len(lista_aval1) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval1)/len(lista_aval1)
+                media1 = sum(lista_aval1) / len(lista_aval1)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -415,7 +417,7 @@ def jogos():
             if len(lista_aval2) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval2)/len(lista_aval2)
+                media1 = sum(lista_aval2) / len(lista_aval2)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -425,7 +427,7 @@ def jogos():
             if len(lista_aval3) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval3)/len(lista_aval3)
+                media1 = sum(lista_aval3) / len(lista_aval3)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -435,7 +437,7 @@ def jogos():
             if len(lista_aval4) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval4)/len(lista_aval4)
+                media1 = sum(lista_aval4) / len(lista_aval4)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -445,7 +447,7 @@ def jogos():
             if len(lista_aval5) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval5)/len(lista_aval5)
+                media1 = sum(lista_aval5) / len(lista_aval5)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -455,7 +457,7 @@ def jogos():
             if len(lista_aval6) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval6)/len(lista_aval6)
+                media1 = sum(lista_aval6) / len(lista_aval6)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -465,7 +467,7 @@ def jogos():
             if len(lista_aval7) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval7)/len(lista_aval7)
+                media1 = sum(lista_aval7) / len(lista_aval7)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -475,7 +477,7 @@ def jogos():
             if len(lista_aval8) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval8)/len(lista_aval8)
+                media1 = sum(lista_aval8) / len(lista_aval8)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -485,7 +487,7 @@ def jogos():
             if len(lista_aval9) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval9)/len(lista_aval9)
+                media1 = sum(lista_aval9) / len(lista_aval9)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -495,7 +497,7 @@ def jogos():
             if len(lista_aval10) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval10)/len(lista_aval10)
+                media1 = sum(lista_aval10) / len(lista_aval10)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -505,7 +507,7 @@ def jogos():
             if len(lista_aval11) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval11)/len(lista_aval11)
+                media1 = sum(lista_aval11) / len(lista_aval11)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -515,7 +517,7 @@ def jogos():
             if len(lista_aval12) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval12)/len(lista_aval12)
+                media1 = sum(lista_aval12) / len(lista_aval12)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -525,7 +527,7 @@ def jogos():
             if len(lista_aval13) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval13)/len(lista_aval13)
+                media1 = sum(lista_aval13) / len(lista_aval13)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -535,7 +537,7 @@ def jogos():
             if len(lista_aval14) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval14)/len(lista_aval14)
+                media1 = sum(lista_aval14) / len(lista_aval14)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -545,7 +547,7 @@ def jogos():
             if len(lista_aval15) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval15)/len(lista_aval15)
+                media1 = sum(lista_aval15) / len(lista_aval15)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
@@ -555,11 +557,10 @@ def jogos():
             if len(lista_aval6) == 0:
                 media1 = None
             else:
-                media1 = sum(lista_aval16)/len(lista_aval16)
+                media1 = sum(lista_aval16) / len(lista_aval16)
                 media1 = f'{media1:.1f}'
                 jogo.media_jogos = float(media1)
                 database.session.commit()
-
 
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))
@@ -567,7 +568,7 @@ def jogos():
 
 
 @app.route('/jogos/<nome>', methods=['GET', 'POST'])
-@login_required #precisa estar logado para acessar essa página
+@login_required  # precisa estar logado para acessar essa página
 def avaliar(nome):
     form = Avaliacoes()
     lista_jogos = Jogos.query.all()
@@ -629,7 +630,7 @@ def avaliar(nome):
     if len(lista_aval) == 0:
         media = None
     else:
-        media = sum(lista_aval)/len(lista_aval)
+        media = sum(lista_aval) / len(lista_aval)
         media = f'{media:.1f}'
         jogo.media_jogos = float(media)
         database.session.commit()
@@ -644,7 +645,7 @@ def avaliar(nome):
             database.session.add(avaliacao)
             database.session.commit()
 
-        return redirect(f'/jogos#{jogo.nome}') 
+        return redirect(f'/jogos#{jogo.nome}')
 
     elif request.method == 'GET':
         aval = Avaliacao.query.filter_by(id_usuario=current_user.id, id_jogos=jogo.id).first()
