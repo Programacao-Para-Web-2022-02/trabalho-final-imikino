@@ -15,7 +15,8 @@ import json
 # Exemplo de requisição usando SteamAPI
 
 
-def steam(id):
+def steam():
+    id = current_user.steam_id
     response = requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/"
                             f"?key=4C9E5612B329282094A93C5599CE7ED4&steamid={id}&format=json&include_appinfo=true").text
     response_info = json.loads(response)
@@ -31,11 +32,11 @@ def steam(id):
     return lista_jogo_horas
 
 
-# @app.route('/steamImage')
-# def steamImage():
-#     response = requests.get("http://media.steampowered.com/steamcommunity/public/images/apps/108600/2bd4642ae337e378e7b04a19d19683425c5f81a4.jpg")
-#
-#     return response.request
+@app.route('/steamImage')
+def steamImage():
+    response = requests.get("http://media.steampowered.com/steamcommunity/public/images/apps/108600/2bd4642ae337e378e7b04a19d19683425c5f81a4.jpg")
+
+    return response.request
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -43,23 +44,22 @@ def home():
     form = IdSteam()
 
     if current_user.is_authenticated:
-        if form.validate_on_submit():
-            id = form.id_steam.data
+        id = current_user.steam_id
 
-            try:
-                lista_jogo_horas = steam(id)
+        try:
+            lista_jogo_horas = steam()
 
-                lista_jogo_horas = sorted(lista_jogo_horas, key=lambda x: x[1], reverse=True)
+            lista_jogo_horas = sorted(lista_jogo_horas, key=lambda x: x[1], reverse=True)
 
-                for lista in lista_jogo_horas:
-                    lista[1] = int(lista[1] / 60)
+            for lista in lista_jogo_horas:
+                lista[1] = int(lista[1] / 60)
 
-                if len(lista_jogo_horas) > 3:
-                    lista_jogo_horas = lista_jogo_horas[0:3]
-                return redirect(f'/{id}')
+            if len(lista_jogo_horas) > 3:
+                lista_jogo_horas = lista_jogo_horas[0:3]
+            return redirect(f'/{id}')
 
-            except:
-                return redirect(f'/error')
+        except:
+            return redirect(f'/error')
 
         jogos = Jogos.query.all()
         lista_melhor_avaliado = []
@@ -153,7 +153,7 @@ def home_id(id):
             return render_template('home.html', foto_perfil=foto_perfil, lista_melhor_avaliado=lista_melhor_avaliado,
                                    lista_lista_favorito=lista_lista_favorito, form=form)
 
-        lista_jogo_horas = steam(id)
+        lista_jogo_horas = steam()
         lista_jogo_horas = sorted(lista_jogo_horas, key=lambda x: x[1], reverse=True)
 
         for lista in lista_jogo_horas:
@@ -336,6 +336,7 @@ def editar_perfil():
         current_user.username = form.username.data
         current_user.email = form.email.data
         current_user.jogo_favorito = form.jogo_favorito.data
+        current_user.steam_id = form.steamId.data
         if form.foto_perfil.data:
             # mudar o campo foto_perfil do usuario para o novo nome da imagem
             nome_imagem = salvar_imagem(form.foto_perfil.data)
@@ -347,6 +348,7 @@ def editar_perfil():
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.jogo_favorito.data = current_user.jogo_favorito
+        form.steamId.data = current_user.steam_id
 
     if current_user.is_authenticated:
         foto_perfil = url_for('static', filename='foto_perfil/{}'.format(current_user.foto_perfil))

@@ -39,7 +39,9 @@ class FormEditarPerfil(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     foto_perfil = FileField('Atualizar Foto de Perfil', validators=[FileAllowed(['jpg', 'png', 'jfif'])])
     jogo_favorito = SelectField('Jogo Favorito', coerce=str, choices=['Não informado', 'Cuphead', 'Diablo III', 'Fortnite', 'League of Legends', 'Overwatch', 'Stardew Valley', 'Counter-Strike: GO', 'World of Warcraft', 'The Witcher 3', 'Minecraft', 'Cities: Skylines', 'Child of Light', 'Doki Doki Literature Club!', 'Persona 5', 'Grand Theft Auto V', 'The Legend of Zelda'])
+    steamId = StringField('Steam ID', validators=[DataRequired()])
     botao_submit_editarperfil = SubmitField('Confirmar Edição')
+
 
 
     def validate_username(self, username):

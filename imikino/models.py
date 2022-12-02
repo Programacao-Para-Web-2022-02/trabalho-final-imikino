@@ -18,6 +18,7 @@ class Usuario(database.Model, UserMixin):
     foto_perfil = database.Column(database.String, default='default.jpg')
     jogo_favorito = database.Column(database.String, default='Não Informado')
     avaliacoes = database.relationship('Avaliacao', backref='autor', lazy=True)
+    steam_id = database.Column(database.String, unique=True)
 
 
 class Jogos(database.Model):
