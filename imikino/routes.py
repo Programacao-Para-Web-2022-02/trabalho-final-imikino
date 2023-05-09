@@ -12,29 +12,30 @@ import pandas as pd
 import json
 
 
-# Exemplo de requisição usando SteamAPI
-
-
 def steam():
     id = current_user.steam_id
-    response = requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/"
-                            f"?key=4C9E5612B329282094A93C5599CE7ED4&steamid={id}&format=json&include_appinfo=true").text
-    response_info = json.loads(response)
-    game_list = []
-    for game_info in response_info['response']['games']:
-        game_list.append([game_info['appid'], game_info['name'], game_info['playtime_forever']])
-    games_df = pd.DataFrame(data=game_list, columns=['appid', 'name', 'playtime_forever'])
-    lista_jogo_horas = []
-    for value in games_df.get("name"):
-        lista_jogo_horas.append([value])
-    for i, value in enumerate(games_df.get("playtime_forever")):
-        lista_jogo_horas[i].append(value)
-    return lista_jogo_horas
+    if id is not None:
+        response = requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/"
+                                f"?key=4C9E5612B329282094A93C5599CE7ED4&steamid={id}&format=json&include_appinfo=true").text
+        response_info = json.loads(response)
+        game_list = []
+        for game_info in response_info['response']['games']:
+            game_list.append([game_info['appid'], game_info['name'], game_info['playtime_forever']])
+        games_df = pd.DataFrame(data=game_list, columns=['appid', 'name', 'playtime_forever'])
+        lista_jogo_horas = []
+        for value in games_df.get("name"):
+            lista_jogo_horas.append([value])
+        for i, value in enumerate(games_df.get("playtime_forever")):
+            lista_jogo_horas[i].append(value)
+        return lista_jogo_horas
+    else:
+        return []
 
 
 @app.route('/steamImage')
 def steamImage():
-    response = requests.get("http://media.steampowered.com/steamcommunity/public/images/apps/108600/2bd4642ae337e378e7b04a19d19683425c5f81a4.jpg")
+    response = requests.get(
+        "http://media.steampowered.com/steamcommunity/public/images/apps/108600/2bd4642ae337e378e7b04a19d19683425c5f81a4.jpg")
 
     return response.request
 
@@ -45,26 +46,27 @@ def home():
 
     if current_user.is_authenticated:
         id = current_user.steam_id
+        if id is not None:
 
-        try:
-            lista_jogo_horas = steam()
+            try:
+                lista_jogo_horas = steam()
 
-            lista_jogo_horas = sorted(lista_jogo_horas, key=lambda x: x[1], reverse=True)
+                lista_jogo_horas = sorted(lista_jogo_horas, key=lambda x: x[1], reverse=True)
 
-            for lista in lista_jogo_horas:
-                lista[1] = int(lista[1] / 60)
+                for lista in lista_jogo_horas:
+                    lista[1] = int(lista[1] / 60)
 
-            if len(lista_jogo_horas) > 3:
-                lista_jogo_horas = lista_jogo_horas[0:3]
-            return redirect(f'/{id}')
+                if len(lista_jogo_horas) > 3:
+                    lista_jogo_horas = lista_jogo_horas[0:3]
+                return redirect(f'/{id}')
 
-        except:
-            return redirect(f'/error')
+            except:
+                return redirect(f'/error')
 
         jogos = Jogos.query.all()
         lista_melhor_avaliado = []
         for jogo in jogos:
-            lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
+            lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos if jogo.media_jogos is not None else '0'])
         lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l: l[1], reverse=True)
         lista_melhor_avaliado = lista_melhor_avaliado[0:5]
 
@@ -165,7 +167,7 @@ def home_id(id):
         jogos = Jogos.query.all()
         lista_melhor_avaliado = []
         for jogo in jogos:
-            lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos])
+            lista_melhor_avaliado.append([jogo.nome, jogo.media_jogos if jogo.media_jogos is not None else '0'])
         lista_melhor_avaliado = sorted(lista_melhor_avaliado, key=lambda l: l[1], reverse=True)
         lista_melhor_avaliado = lista_melhor_avaliado[0:5]
 
@@ -358,29 +360,61 @@ def editar_perfil():
 @app.route('/jogos')
 @login_required  # precisa estar logado para acessar essa página
 def jogos():
-    '''
-    #Apenas para criar os jogos no banco de dados
-    jogo1 = Jogos(id= 1, nome='Cuphead', lancamento='2017', descricao='Cuphead é um jogo eletrônico de run and gun e plataforma criado pelos irmãos canadenses Chad e Jared Moldenhauer através da Studio MDHR', genero='Shoot em up, Run and gun', desenvolvedor='MDHR', foto_jogo='cuphead.jpg')
-    jogo2 = Jogos(id= 2, nome='Diablo III', lancamento='2012', descricao='Diablo III é um RPG de ação hack and slash desenvolvido pela Blizzard Entertainment, o terceiro título da série Diablo', genero='RPG, Hack and slash', desenvolvedor='Blizzard', foto_jogo='diablo.jpg')
-    jogo3 = Jogos(id= 3, nome='Fortnite', lancamento='2017', descricao='Fortnite é um jogo eletrônico multijogador online, desenvolvido pela Epic Games e lançado como diferentes modos de jogo que compartilham a mesma jogabilidade e motor gráfico de jogo', genero='battle royale, multijogador', desenvolvedor='Epic Games', foto_jogo='fortnite.jpg')
-    jogo4 = Jogos(id= 4, nome='League of Legends', lancamento='2009', descricao='League of Legends é um jogo eletrônico do gênero multiplayer online battle arena desenvolvido e publicado pela Riot Games', genero='MOBA, multijogador', desenvolvedor='Riot Games', foto_jogo='lol.jpg')
-    jogo5 = Jogos(id= 5, nome='Overwatch', lancamento='2016', descricao='Overwatch é um jogo eletrônico multijogador de tiro em primeira pessoa desenvolvido e publicado pela Blizzard Entertainment', genero='FPS, multijogador', desenvolvedor='Blizzard', foto_jogo='ow.jpg')
-    jogo6 = Jogos(id= 6, nome='Stardew Valley', lancamento='2016', descricao='Stardew Valley é um jogo de videogame, dos gêneros RPG e simulação, desenvolvido por Eric Barone e publicado pela ConcernedApe e pela Chucklefish', genero='simulação, RPG', desenvolvedor='ConcernedApe', foto_jogo='stardewvalley.jpg')
-    jogo7 = Jogos(id= 7, nome='Counter-Strike: GO', lancamento='2012', descricao='Counter-Strike é uma série de jogos eletrônicos de tiro em primeira pessoa multiplayer, no qual times de terroristas e contra-terroristas batalham entre si', genero='Tiro tático, multiplayer', desenvolvedor='Valve Corporation', foto_jogo='cs_go.png')
-    jogo8 = Jogos(id= 8, nome='World of Warcraft', lancamento='2004', descricao='WOW é um jogo onde você cria e vive com seus personagens em um mundo virtual junto com milhões de outras pessoas. Você pode escolher entre várias raças como humano, elfo, goblin ou até um panda', genero='MMORPG, Fantasia', desenvolvedor='Blizzard Entertainment ', foto_jogo='wow.jpg')
-    jogo9 = Jogos(id= 9, nome='The Witcher 3', lancamento='2015', descricao='The Witcher 3 conta a aventura do bruxo Geralt de Rívia em busca da sua filha, Ciri, enquanto enfrenta inimigos mortais e explora um mundo cheio de possibilidades, desafios e aventuras', genero='Mundo aberto, RPG', desenvolvedor='CD Projekt RED', foto_jogo='the witcher.jpg')
-    jogo10 = Jogos(id= 10, nome='Minecraft', lancamento='2011', descricao='Minecraft é um jogo eletrônico sandbox de sobrevivência criado pelo desenvolvedor sueco Markus "Notch" Persson e posteriormente desenvolvido e publicado pela Mojang Studios', genero='Sandbox, Sobrevivência', desenvolvedor='Mojang Studios', foto_jogo='minecraft.png')
-    jogo11 = Jogos(id= 11, nome='Cities: Skylines', lancamento='2015', descricao='Cities: Skylines é um jogo de construção de cidade singleplayer produzido pela Colossal Order e publicado pela Paradox Interactive.', genero='Simulador, Gerenciamento', desenvolvedor='Colossal Order', foto_jogo='CitiesSkylines.jpg')
-    jogo12 = Jogos(id= 12, nome='Child of Light', lancamento='2014', descricao='Child of Light é um jogo de RPG de plataforma desenvolvido pela Ubisoft Montreal.', genero='RPG, Plataforma', desenvolvedor='Ubisoft', foto_jogo='child_of_light.jpg')
-    jogo13 = Jogos(id= 13, nome='Doki Doki Literature Club!', lancamento='2017', descricao='Doki Doki Literature Club! é um jogo eletrônico de visual novel desenvolvida pela Team Salvato.', genero='Visual Novel, Horror', desenvolvedor='Dan Salvato', foto_jogo='doki-doki.jpg')
-    jogo14 = Jogos(id=14,nome='Persona 5', lancamento='2016', descricao='O jogo é cronologicamente a sexta edição da série Persona, que faz parte principalmente da franquia Megami Tensei.', genero='RPG,Social simulation game', desenvolvedor='Atlus', foto_jogo='persona_5.jpg')
-    jogo15 = Jogos(id=15, nome='Grand Theft Auto V', lancamento='2013', descricao='Grand Theft Auto V é um jogo acompanha a história da campanha um jogador seguindo três criminosos e seus esforços para realizarem assaltos sob a pressão de uma agência governamental.', genero='Tiro, Mundo aberto', desenvolvedor='Rockstar Games', foto_jogo='GTA.jpg')
-    jogo16 = Jogos(id=16, nome='The Legend of Zelda', lancamento='2017', descricao='Viaje pelos vastos campos, florestas e montanhas enquanto descobre o que aconteceu com o reino de Hyrule nesta deslumbrante aventura a céu aberto.', genero='RPG, Mundo aberto', desenvolvedor='Nintendo', foto_jogo='Zelda.jpg')
-    lista_jogos = [jogo1, jogo2, jogo3, jogo4, jogo5, jogo6, jogo7, jogo8, jogo9, jogo10, jogo11, jogo12, jogo13, jogo14, jogo15, jogo16]
-
-    for jogo in lista_jogos:
-        database.session.add(jogo)
-    database.session.commit()'''
+    # Apenas para criar os jogos no banco de dados
+    # jogo1 = Jogos(id=1, nome='Cuphead', lancamento='2017',
+    #               descricao='Cuphead é um jogo eletrônico de run and gun e plataforma criado pelos irmãos canadenses Chad e Jared Moldenhauer através da Studio MDHR',
+    #               genero='Shoot em up, Run and gun', desenvolvedor='MDHR', foto_jogo='cuphead.jpg')
+    # jogo2 = Jogos(id=2, nome='Diablo III', lancamento='2012',
+    #               descricao='Diablo III é um RPG de ação hack and slash desenvolvido pela Blizzard Entertainment, o terceiro título da série Diablo',
+    #               genero='RPG, Hack and slash', desenvolvedor='Blizzard', foto_jogo='diablo.jpg')
+    # jogo3 = Jogos(id=3, nome='Fortnite', lancamento='2017',
+    #               descricao='Fortnite é um jogo eletrônico multijogador online, desenvolvido pela Epic Games e lançado como diferentes modos de jogo que compartilham a mesma jogabilidade e motor gráfico de jogo',
+    #               genero='battle royale, multijogador', desenvolvedor='Epic Games', foto_jogo='fortnite.jpg')
+    # jogo4 = Jogos(id=4, nome='League of Legends', lancamento='2009',
+    #               descricao='League of Legends é um jogo eletrônico do gênero multiplayer online battle arena desenvolvido e publicado pela Riot Games',
+    #               genero='MOBA, multijogador', desenvolvedor='Riot Games', foto_jogo='lol.jpg')
+    # jogo5 = Jogos(id=5, nome='Overwatch', lancamento='2016',
+    #               descricao='Overwatch é um jogo eletrônico multijogador de tiro em primeira pessoa desenvolvido e publicado pela Blizzard Entertainment',
+    #               genero='FPS, multijogador', desenvolvedor='Blizzard', foto_jogo='ow.jpg')
+    # jogo6 = Jogos(id=6, nome='Stardew Valley', lancamento='2016',
+    #               descricao='Stardew Valley é um jogo de videogame, dos gêneros RPG e simulação, desenvolvido por Eric Barone e publicado pela ConcernedApe e pela Chucklefish',
+    #               genero='simulação, RPG', desenvolvedor='ConcernedApe', foto_jogo='stardewvalley.jpg')
+    # jogo7 = Jogos(id=7, nome='Counter-Strike: GO', lancamento='2012',
+    #               descricao='Counter-Strike é uma série de jogos eletrônicos de tiro em primeira pessoa multiplayer, no qual times de terroristas e contra-terroristas batalham entre si',
+    #               genero='Tiro tático, multiplayer', desenvolvedor='Valve Corporation', foto_jogo='cs_go.png')
+    # jogo8 = Jogos(id=8, nome='World of Warcraft', lancamento='2004',
+    #               descricao='WOW é um jogo onde você cria e vive com seus personagens em um mundo virtual junto com milhões de outras pessoas. Você pode escolher entre várias raças como humano, elfo, goblin ou até um panda',
+    #               genero='MMORPG, Fantasia', desenvolvedor='Blizzard Entertainment ', foto_jogo='wow.jpg')
+    # jogo9 = Jogos(id=9, nome='The Witcher 3', lancamento='2015',
+    #               descricao='The Witcher 3 conta a aventura do bruxo Geralt de Rívia em busca da sua filha, Ciri, enquanto enfrenta inimigos mortais e explora um mundo cheio de possibilidades, desafios e aventuras',
+    #               genero='Mundo aberto, RPG', desenvolvedor='CD Projekt RED', foto_jogo='the witcher.jpg')
+    # jogo10 = Jogos(id=10, nome='Minecraft', lancamento='2011',
+    #                descricao='Minecraft é um jogo eletrônico sandbox de sobrevivência criado pelo desenvolvedor sueco Markus "Notch" Persson e posteriormente desenvolvido e publicado pela Mojang Studios',
+    #                genero='Sandbox, Sobrevivência', desenvolvedor='Mojang Studios', foto_jogo='minecraft.png')
+    # jogo11 = Jogos(id=11, nome='Cities: Skylines', lancamento='2015',
+    #                descricao='Cities: Skylines é um jogo de construção de cidade singleplayer produzido pela Colossal Order e publicado pela Paradox Interactive.',
+    #                genero='Simulador, Gerenciamento', desenvolvedor='Colossal Order', foto_jogo='CitiesSkylines.jpg')
+    # jogo12 = Jogos(id=12, nome='Child of Light', lancamento='2014',
+    #                descricao='Child of Light é um jogo de RPG de plataforma desenvolvido pela Ubisoft Montreal.',
+    #                genero='RPG, Plataforma', desenvolvedor='Ubisoft', foto_jogo='child_of_light.jpg')
+    # jogo13 = Jogos(id=13, nome='Doki Doki Literature Club!', lancamento='2017',
+    #                descricao='Doki Doki Literature Club! é um jogo eletrônico de visual novel desenvolvida pela Team Salvato.',
+    #                genero='Visual Novel, Horror', desenvolvedor='Dan Salvato', foto_jogo='doki-doki.jpg')
+    # jogo14 = Jogos(id=14, nome='Persona 5', lancamento='2016',
+    #                descricao='O jogo é cronologicamente a sexta edição da série Persona, que faz parte principalmente da franquia Megami Tensei.',
+    #                genero='RPG,Social simulation game', desenvolvedor='Atlus', foto_jogo='persona_5.jpg')
+    # jogo15 = Jogos(id=15, nome='Grand Theft Auto V', lancamento='2013',
+    #                descricao='Grand Theft Auto V é um jogo acompanha a história da campanha um jogador seguindo três criminosos e seus esforços para realizarem assaltos sob a pressão de uma agência governamental.',
+    #                genero='Tiro, Mundo aberto', desenvolvedor='Rockstar Games', foto_jogo='GTA.jpg')
+    # jogo16 = Jogos(id=16, nome='The Legend of Zelda', lancamento='2017',
+    #                descricao='Viaje pelos vastos campos, florestas e montanhas enquanto descobre o que aconteceu com o reino de Hyrule nesta deslumbrante aventura a céu aberto.',
+    #                genero='RPG, Mundo aberto', desenvolvedor='Nintendo', foto_jogo='Zelda.jpg')
+    # lista_jogos = [jogo1, jogo2, jogo3, jogo4, jogo5, jogo6, jogo7, jogo8, jogo9, jogo10, jogo11, jogo12, jogo13,
+    #                jogo14, jogo15, jogo16]
+    #
+    # for jogo in lista_jogos:
+    #     database.session.add(jogo)
+    # database.session.commit()
 
     lista_jogos = Jogos.query.all()
 
