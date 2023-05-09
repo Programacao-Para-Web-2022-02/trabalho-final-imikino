@@ -337,6 +337,30 @@ body {
     width: 100%;
 }
 
+.listaSteam{
+    height: 410px;
+    width: 100%;
+}
+
+.ImagemJogo{
+    display: flex;
+    justify-content: start;
+    margin-left: 200%;
+    margin-top: 10%;
+}
+
+.jogoSteam{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-left: 10%;
+    width: 400px;
+}
+
+.horasSteam{
+    margin-left: 40%;
+}
+
 .listaL {
   display: flex;
   align-items: center;
