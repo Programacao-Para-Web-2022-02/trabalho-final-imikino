@@ -48,21 +48,19 @@ def home():
     if current_user.is_authenticated:
         id = current_user.steam_id
         if id is not None:
+            lista_jogo_horas = steam()
 
-            try:
-                lista_jogo_horas = steam()
+            lista_jogo_horas = sorted(lista_jogo_horas, key=lambda x: x[1] if x[1] is not None else '0', reverse=True)
 
-                lista_jogo_horas = sorted(lista_jogo_horas, key=lambda x: x[1] if x[1] is not None else '0', reverse=True)
+            for lista in lista_jogo_horas:
+                lista[2] = int(lista[2] / 60)
 
-                for lista in lista_jogo_horas:
-                    lista[2] = int(lista[2] / 60)
+            if len(lista_jogo_horas) > 3:
+                lista_jogo_horas = lista_jogo_horas[0:3]
+            return redirect(f'/{id}')
 
-                if len(lista_jogo_horas) > 3:
-                    lista_jogo_horas = lista_jogo_horas[0:3]
-                return redirect(f'/{id}')
-
-            except:
-                return redirect(f'/error')
+        elif id is None:
+            return redirect(f'/error')
 
         jogos = Jogos.query.all()
         lista_melhor_avaliado = []
